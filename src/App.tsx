@@ -9,6 +9,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { articles } from './data/articles';
+import { PrivacyPolicy, TermsOfService, ManufacturingStandards, Certifications, ContactSupport } from './pages/LegalPages';
 
 function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -946,14 +947,14 @@ function Home() {
           </div>
           <div className="flex flex-col gap-sm">
             <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Legal</h4>
-            <a aria-label="Read our Privacy Policy" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" href="#">Privacy Policy</a>
-            <a aria-label="Read our Terms of Service" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" href="#">Terms of Service</a>
-            <a aria-label="View our Manufacturing Standards" className="text-on-surface font-bold hover:text-on-surface transition-colors underline-offset-4 hover:underline" href="#">Manufacturing Standards</a>
+            <Link aria-label="Read our Privacy Policy" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/privacy-policy">Privacy Policy</Link>
+            <Link aria-label="Read our Terms of Service" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/terms-of-service">Terms of Service</Link>
+            <Link aria-label="View our Manufacturing Standards" className="text-on-surface font-bold hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/manufacturing-standards">Manufacturing Standards</Link>
           </div>
           <div className="flex flex-col gap-sm">
             <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Company</h4>
-            <a aria-label="View our Certifications" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" href="#">Certifications</a>
-            <a aria-label="Contact our Support team" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" href="#">Contact Support</a>
+            <Link aria-label="View our Certifications" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/certifications">Certifications</Link>
+            <Link aria-label="Contact our Support team" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/contact-support">Contact Support</Link>
           </div>
           <div className="flex flex-col gap-sm lg:col-span-1">
             <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Contact</h4>
@@ -1054,6 +1055,11 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/artikel/:slug" element={<ArticleView />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/manufacturing-standards" element={<ManufacturingStandards />} />
+      <Route path="/certifications" element={<Certifications />} />
+      <Route path="/contact-support" element={<ContactSupport />} />
     </Routes>
   );
 }
