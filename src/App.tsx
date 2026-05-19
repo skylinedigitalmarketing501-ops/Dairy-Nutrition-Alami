@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
-import { Menu, X, FlaskConical, BadgeCheck, TestTube2, Boxes, Microscope, SlidersHorizontal, CheckCircle2, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Loader2, Clock, Target, Star, Quote, Info, ChevronRight, ArrowLeft } from 'lucide-react';
-import { animate, motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Routes, Route, Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Menu, X, FlaskConical, BadgeCheck, TestTube2, Boxes, Microscope, SlidersHorizontal, CheckCircle2, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Loader2, Clock, Target, Star, Quote, Info, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { animate, motion, AnimatePresence, useScroll, useSpring, useTransform } from 'motion/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -10,7 +10,106 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { articles } from './data/articles';
 import { PrivacyPolicy, TermsOfService, ManufacturingStandards, Certifications, ContactSupport } from './pages/LegalPages';
+import { ProcessPage } from './pages/ProcessPage';
 
+export const ThemeToggle = () => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Start light by default
+    const isDarkGlobal = document.documentElement.classList.contains('dark');
+    setIsDark(isDarkGlobal);
+  }, []);
+
+  const toggleMainTheme = () => {
+    const nextDark = !isDark;
+    setIsDark(nextDark);
+    if (nextDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  return (
+    <button
+      onClick={toggleMainTheme}
+      aria-label="Toggle Theme"
+      className="relative w-10 h-[18px] md:w-[44px] md:h-5 rounded-full shadow-md flex items-center justify-center overflow-hidden border border-black/20 dark:border-white/10 transition-transform active:scale-95 ml-2 flex-shrink-0"
+    >
+      <div className={`absolute inset-0 flex transition-transform duration-500 ease-in-out ${isDark ? 'rotate-180' : 'rotate-0'}`}>
+        <div className="flex-1 bg-gradient-to-r from-primary to-orange-600" />
+        <div className="w-[1.5px] bg-black/20 shadow-inner z-10" />
+        <div className="flex-1 bg-gradient-to-r from-white to-zinc-300 dark:from-zinc-500 dark:to-zinc-700" />
+      </div>
+      {/* Glossy Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none rounded-full" 
+        style={{
+          background: 'linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.2) 40%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%)'
+        }} 
+      />
+      <div className="absolute top-[1px] left-[20%] right-[20%] h-[30%] bg-white/60 rounded-full blur-[1px] pointer-events-none" />
+    </button>
+  );
+};
+
+export const ScrollProgress = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-primary origin-left z-[100] drop-shadow-[0_0_8px_rgba(255,152,0,0.5)]"
+      style={{ scaleX }}
+    />
+  );
+};
+
+export const MouseLighting = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const updateMousePosition = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const targetTags = ['A', 'BUTTON', 'IMG', 'DIV'];
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (targetTags.includes(target.tagName) || target.closest('a') || target.closest('button')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('mouseover', handleMouseOver);
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      className="pointer-events-none fixed inset-0 z-40 mix-blend-screen"
+      animate={{
+        background: `radial-gradient(${isHovering ? '600px' : '400px'} circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 152, 0, ${isHovering ? '0.08' : '0.05'}), transparent 80%)`
+      }}
+      transition={{ type: "tween", ease: "backOut", duration: 0.5 }}
+    />
+  );
+};
+
+// ... keep existing code
 function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState<string | null>(null);
@@ -107,12 +206,12 @@ function Home() {
   };
 
   return (
-    <div className="bg-background text-on-background font-body-md antialiased overflow-x-hidden min-h-screen">
+    <div className="bg-background text-on-background font-body-md antialiased overflow-x-hidden min-h-screen transition-colors duration-500">
       {/* TopNavBar Component */}
       <nav className="fixed top-0 w-full z-50 bg-stone-50/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-orange-100/50 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
           <motion.div 
-            className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 via-zinc-500 to-zinc-900 dark:from-white dark:via-zinc-400 dark:to-white"
+            className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-600 to-emerald-950 dark:from-emerald-200 dark:via-emerald-400 dark:to-emerald-200"
             style={{ backgroundSize: '200% auto' }}
             animate={{ backgroundPosition: ['0% center', '200% center'] }}
             transition={{ duration: 8, ease: 'linear', repeat: Infinity }}
@@ -131,7 +230,7 @@ function Home() {
             ].map((item) => (
               <a 
                 key={item.id}
-                className={`cursor-pointer transition-colors pb-1 ${activeSection === item.id ? 'text-zinc-900 dark:text-white border-b-2 border-zinc-900 dark:border-white' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 border-b-2 border-transparent'}`} 
+                className={`cursor-pointer transition-colors pb-1 ${activeSection === item.id ? 'text-emerald-900 dark:text-emerald-300 border-b-2 border-emerald-900 dark:border-emerald-300' : 'text-zinc-500 dark:text-zinc-400 hover:text-emerald-700 dark:hover:text-emerald-200 border-b-2 border-transparent'}`} 
                 onClick={(e) => handleNavScroll(e, item.id)} 
                 href={`#${item.id}`}
               >
@@ -140,18 +239,24 @@ function Home() {
             ))}
           </div>
           <div className="hidden lg:flex gap-sm items-center">
-            <a href="#contact" onClick={(e) => handleAction(e, 'nav-project', 'contact')} className="bg-white text-on-surface font-label-sm px-md py-sm rounded-lg hover:bg-white hover:text-on-surface active:bg-white active:text-on-surface transition-transform duration-300 scale-95 active:scale-90 border border-outline-variant/30 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-sm">
-              {isNavigating === 'nav-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin text-on-surface" /> : null}
+            <a href="#contact" onClick={(e) => handleAction(e, 'nav-project', 'contact')} className="bg-white text-on-surface dark:text-zinc-900 font-label-sm px-md py-sm rounded-lg hover:bg-white hover:text-on-surface dark:hover:text-zinc-900 active:bg-white active:text-on-surface dark:active:text-zinc-900 transition-transform duration-300 scale-95 active:scale-90 border border-outline-variant/30 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-sm">
+              {isNavigating === 'nav-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin text-on-surface dark:text-zinc-900" /> : null}
               Mulai Proyek Anda
             </a>
-            <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'nav-consult')} className="bg-on-surface text-on-primary font-label-sm px-md py-sm rounded-lg hover:bg-zinc-800 transition-all duration-300 scale-95 active:scale-90 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px]">
-              {isNavigating === 'nav-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-              Konsultasi Gratis
-            </a>
+            <div className="flex items-center">
+              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'nav-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-md py-sm rounded-lg transition-all duration-300 scale-95 active:scale-90 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-md border border-emerald-500/20">
+                {isNavigating === 'nav-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                Konsultasi Gratis
+              </a>
+              <ThemeToggle />
+            </div>
           </div>
-          <button className="md:hidden text-zinc-900 dark:text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex md:hidden items-center gap-3">
+            <ThemeToggle />
+            <button className="text-emerald-900 dark:text-emerald-300 hover:text-emerald-700 dark:hover:text-emerald-100 transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -188,7 +293,7 @@ function Home() {
                   {isNavigating === 'mobile-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Mulai Proyek Anda
                 </a>
-                <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'mobile-consult')} className="bg-on-surface text-on-primary font-label-sm px-md py-3 rounded-xl text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform">
+                <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'mobile-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-md py-3 rounded-xl text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform shadow-md border border-emerald-500/20">
                   {isNavigating === 'mobile-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Konsultasi Gratis
                 </a>
@@ -202,10 +307,20 @@ function Home() {
         {/* Hero Section */}
         <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-margin lg:py-xl flex flex-col lg:flex-row items-center gap-12 lg:gap-margin" id="home">
           <div className="flex-1 space-y-md z-10 pt-4 md:pt-0">
-            <div className="inline-block bg-primary-container text-on-surface font-label-sm px-sm py-xs rounded-full border border-outline-variant/30 uppercase tracking-widest text-xs">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-block bg-primary-container text-on-surface font-label-sm px-sm py-xs rounded-full border border-outline-variant/30 uppercase tracking-widest text-xs"
+            >
               B2B Contract Manufacturing
-            </div>
-            <h1 className="font-h1 text-h1 text-on-surface">
+            </motion.div>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="font-h1 text-h1 text-on-surface"
+            >
               Maklon{' '}
               <span className="inline-block whitespace-pre">
                 {"Pressed Milk".split('').map((char, index) => (
@@ -225,10 +340,22 @@ function Home() {
                 ))}
               </span>
               {' '}Candy & Lozenges Premium dari Bahan Alami
-            </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-[672px]">Ciptakan Brand Permen Sehat Anda dengan Formula Dairy Nutrition Berkualitas Tinggi. Kami menyediakan solusi hulu ke hilir untuk inovasi produk nutrisi.</p>
-            <div className="flex flex-wrap gap-sm pt-sm">
-              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'hero-consult')} className="bg-on-surface text-on-primary font-label-sm px-6 sm:px-lg py-2 sm:py-sm rounded-lg hover:bg-primary transition-colors h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[160px] w-full sm:w-auto">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="font-body-lg text-body-lg text-on-surface-variant max-w-[672px]"
+            >
+              Ciptakan Brand Permen Sehat Anda dengan Formula Dairy Nutrition Berkualitas Tinggi. Kami menyediakan solusi hulu ke hilir untuk inovasi produk nutrisi.
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex flex-wrap gap-sm pt-sm"
+            >
+              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'hero-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-6 sm:px-lg py-2 sm:py-sm rounded-lg transition-all shadow-md border border-emerald-500/20 h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[160px] w-full sm:w-auto">
                 {isNavigating === 'hero-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 Konsultasi Gratis
               </a>
@@ -236,20 +363,25 @@ function Home() {
                 {isNavigating === 'hero-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 Mulai Proyek Anda
               </a>
-            </div>
+            </motion.div>
           </div>
-          <div className="flex-1 w-full relative mt-4 md:mt-0">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="flex-1 w-full relative mt-4 md:mt-0"
+          >
             <div className="absolute inset-0 bg-primary-container rounded-[2rem] md:rounded-3xl -rotate-3 scale-105 opacity-50 z-0"></div>
             <img 
               alt="Hero Image" 
               className="w-full h-[280px] md:h-[500px] object-cover rounded-[2rem] md:rounded-3xl shadow-sm border border-outline-variant/20 relative z-10" 
               src="https://imgmu.id/f/32295e5.jpg" 
             />
-          </div>
+          </motion.div>
         </section>
 
         {/* Why Choose Us */}
-        <section className="bg-surface-container-lowest py-12 md:py-margin lg:py-xl border-y border-surface-variant/50" id="about">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="bg-surface-container-lowest py-12 md:py-margin lg:py-xl border-y border-surface-variant/50" id="about">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-[768px] mx-auto mb-lg">
               <h2 className="font-h2 text-h2 text-on-surface mb-sm">Kenapa Memilih Dairy Nutrition Alami</h2>
@@ -287,10 +419,10 @@ function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Services Bento Grid */}
-        <section className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
           <h2 className="font-h2 text-h2 text-on-surface mb-8 md:mb-lg text-center">Layanan Maklon Permen Dairy</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[250px]">
             <div className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 min-h-[350px] md:min-h-0 rounded-2xl relative overflow-hidden group border border-outline-variant/20">
@@ -306,9 +438,9 @@ function Home() {
                   Pressed Milk Candy
                   <div className="relative group/tooltip inline-flex items-center">
                     <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
                       Pressed Milk Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-900 drop-shadow-sm"></div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
                     </div>
                   </div>
                 </h3>
@@ -331,9 +463,9 @@ function Home() {
                   Lozenges Candy
                   <div className="relative group/tooltip inline-flex items-center">
                     <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
                       Lozenges Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-900 drop-shadow-sm"></div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
                     </div>
                   </div>
                 </h3>
@@ -356,9 +488,9 @@ function Home() {
                   Tablet Candy
                   <div className="relative group/tooltip inline-flex items-center">
                     <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
                       Tablet Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-900 drop-shadow-sm"></div>
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
                     </div>
                   </div>
                 </h3>
@@ -377,7 +509,7 @@ function Home() {
               <a href="#products" onClick={(e) => handleNavScroll(e, 'products')} className="bg-surface-container-high text-on-surface font-label-sm px-4 md:px-md py-2 md:py-sm rounded-lg hover:bg-outline-variant transition-colors whitespace-nowrap h-10 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">Lihat Katalog</a>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Modal Layanan */}
         <AnimatePresence>
@@ -386,7 +518,7 @@ function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-emerald-950/60 backdrop-blur-sm"
               onClick={closeServiceModal}
             >
               <motion.div
@@ -405,14 +537,14 @@ function Home() {
                   >
                     <X className="w-5 h-5 flex-shrink-0" />
                   </button>
-                  <h3 className="font-h3 text-zinc-900 dark:text-zinc-100 mb-4 pr-8 text-xl md:text-2xl">{serviceDetails[expandedService].title}</h3>
+                  <h3 className="font-h3 text-emerald-950 dark:text-emerald-100 mb-4 pr-8 text-xl md:text-2xl">{serviceDetails[expandedService].title}</h3>
                   <div className="font-body-md text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed overflow-y-auto max-h-[60vh] pb-4">
                     {serviceDetails[expandedService].content}
                   </div>
                   <div className="mt-6 pt-4 flex justify-end">
                     <button 
                       onClick={closeServiceModal}
-                      className="px-6 py-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-sm"
+                      className="px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-950 to-emerald-600 dark:from-emerald-300 dark:to-emerald-500 text-white dark:text-emerald-950 font-medium hover:from-emerald-900 hover:to-emerald-500 dark:hover:from-emerald-400 dark:hover:to-emerald-600 transition-colors shadow-md border border-emerald-500/20"
                     >
                       Tutup
                     </button>
@@ -424,7 +556,7 @@ function Home() {
         </AnimatePresence>
 
         {/* R&D Section */}
-        <section className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="rnd">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="rnd">
           <div className="mb-lg text-center max-w-[768px] mx-auto">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Formulasi & R&D Eksekutif</h2>
             <p className="font-body-md text-body-md text-on-surface-variant">Inovasi yang didukung oleh sains. Tim R&D kami siap mewujudkan visi produk unik Anda dengan presisi dan standar kualitas tertinggi.</p>
@@ -495,17 +627,17 @@ function Home() {
           {/* R&D Process Breakdown */}
           <div className="mt-xl">
             <div className="text-center max-w-[768px] mx-auto mb-lg">
-              <h3 className="font-h2 text-h2 text-on-surface mb-xs">Tahapan R&D Kami</h3>
-              <p className="font-body-md text-on-surface-variant text-sm">Proses pengembangan produk yang terstruktur dan terukur untuk memastikan efisiensi waktu dan hasil formulasi berkualitas premium.</p>
+              <h3 className="font-h2 text-h2 text-on-surface mb-xs">Tahapan Maklon Kami</h3>
+              <p className="font-body-md text-on-surface-variant text-sm">Proses pengembangan produk dan manufaktur yang terstruktur untuk mewujudkan brand Anda dari konsep hingga siap edar.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md gap-y-10">
               {/* Step 1 */}
               <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-on-surface text-on-primary rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-sm">1</div>
+                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">1</div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Ideation & Analysis</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Riset mendalam tren pasar, target audiens, dan analisis kompetitor untuk menentukan profil fungsional dan nutrisi yang tepat.</p>
+                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Konsultasi & Ideasi</h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Diskusi mendalam mengenai konsep produk, target pasar, pemilihan bahan baku premium, dan rancangan formula eksklusif brand Anda.</p>
                 
                 <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
                   <div className="flex items-start gap-2.5">
@@ -519,7 +651,7 @@ function Home() {
                     <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Product Blueprint & Kelayakan Maklon</span>
+                      <span className="text-sm text-on-surface leading-snug">Konsep Produk & Kesepakatan Awal</span>
                     </div>
                   </div>
                 </div>
@@ -527,60 +659,10 @@ function Home() {
 
               {/* Step 2 */}
               <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-on-surface text-on-primary rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-sm">2</div>
+                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">2</div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Prototyping</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Pembuatan sampel awal di lab farmasi. Eksperimentasi pencampuran bahan baku untuk menguji interaksi dan kesempurnaan tekstur.</p>
-                
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
-                  <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
-                    <div>
-                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">3 - 4 Minggu</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
-                    <div>
-                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Sampel V1 & Laporan Nutrisi Awal</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-on-surface text-on-primary rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-sm">3</div>
-                
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Sensory Testing</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Pengujian organoleptik komprehensif meliputi parameter rasa, aroma, warna, dan <i>mouth-feel</i> standar permen premium pasar.</p>
-                
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
-                  <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
-                    <div>
-                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">2 - 3 Minggu</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
-                    <div>
-                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Formula Final Ditetapkan (<i>Locked</i>)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-on-surface text-on-primary rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-sm">4</div>
-                
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Scale-up & Stability</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Uji ketahanan produk terhadap suhu, kelembaban, serta eksekusi perpindahan dimensi dari skala lab menuju skala manufaktur (SOP pabrik).</p>
+                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Formulasi & Sampel</h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Tim R&D Farmasi kami meracik sampel awal untuk uji organoleptik, kestabilan tekstur, dan rasa rill hingga formula final teruji (<i>Locked</i>).</p>
                 
                 <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
                   <div className="flex items-start gap-2.5">
@@ -594,17 +676,67 @@ function Home() {
                     <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">SOP Produksi & Data <i>Shelf-Life</i></span>
+                      <span className="text-sm text-on-surface leading-snug">Sampel <i>Approved</i> & Formula Final</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
+                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">3</div>
+                
+                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Legalitas & Desain</h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Pengesahan identitas merek. Kami mengurus izin BPOM, Sertifikasi Halal, sembari tim desain merancang kemasan komersial.</p>
+                
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                  <div className="flex items-start gap-2.5">
+                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
+                      <span className="text-sm font-medium text-on-surface">1 - 3 Bulan</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
+                      <span className="text-sm text-on-surface leading-snug">Izin Edar BPOM & Desain Kemasan</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
+                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">4</div>
+                
+                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Produksi & Pengiriman</h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Produksi massal berstandar CPPOB/GMP, <i>Quality Control</i> yang ketat, dilanjutkan pengemasan siap jual dan pengiriman ke <i>warehouse</i> Anda.</p>
+                
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                  <div className="flex items-start gap-2.5">
+                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
+                      <span className="text-sm font-medium text-on-surface">2 - 4 Minggu</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
+                      <span className="text-sm text-on-surface leading-snug">Produk Siap Jual (<i>Ready to Launch</i>)</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Portofolio Products Section */}
-        <section className="py-12 md:py-margin lg:py-xl overflow-hidden relative" id="products">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl overflow-hidden relative" id="products">
           <div className="text-center max-w-[768px] mx-auto mb-10 md:mb-12 px-4">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Portofolio Produk</h2>
             <p className="font-body-md text-on-surface-variant">Berbagai inovasi nutrisi premium yang telah sukses kami produksi untuk klien kami.</p>
@@ -645,36 +777,42 @@ function Home() {
                 <SwiperSlide key={idx} className="w-[280px] sm:w-[350px] md:w-[450px]">
                   <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
                     <img src={imgUrl} alt={`Portofolio Produk Dairy Nutrition Alami ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-80 pointer-events-none"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-emerald-900/40 to-transparent opacity-80 pointer-events-none transition-opacity duration-300 group-hover:opacity-100"></div>
                     <div className="absolute bottom-6 left-6 right-6 text-white pointer-events-none drop-shadow-md">
-                      <div className="font-label-sm uppercase tracking-widest text-white/80 mb-1 text-[10px] md:text-xs">Premium Product</div>
-                      <div className="font-h3 text-lg md:text-xl font-bold">Inovasi Suplemen</div>
+                      <div className="font-label-sm uppercase tracking-widest text-white/80 dark:text-zinc-300 mb-1 text-[10px] md:text-xs">Premium Product</div>
+                      <div className="font-h3 text-lg md:text-xl font-bold dark:bg-gradient-to-b dark:from-emerald-200 dark:to-emerald-400 dark:bg-clip-text dark:text-transparent">Inovasi Suplemen</div>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
-        </section>
+        </motion.section>
 
         {/* Process Section */}
-        <section className="py-12 md:py-margin lg:py-xl bg-surface-container-lowest border-y border-surface-variant/50" id="process">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl bg-surface-container-lowest border-y border-surface-variant/50" id="process">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-h2 text-h2 text-on-surface mb-12 flex justify-center text-center">Proses Maklon Mudah</h2>
             <div className="grid grid-cols-2 md:flex md:flex-row justify-between items-start relative gap-y-12 gap-x-4 md:gap-0">
-              <div className="hidden md:block absolute top-[28px] md:top-[32px] left-[5%] w-[90%] h-[2px] bg-outline-variant/30 z-0 overflow-hidden rounded-full">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-transparent via-orange-500 to-transparent w-1/4"
-                  animate={{ x: ["-100%", "400%"] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                />
+              <div className="hidden md:block absolute top-[28px] md:top-[32px] left-[5%] w-[90%] h-[2px] z-0">
+                <div className="absolute inset-0 border-t-[2px] border-dashed border-outline-variant/30"></div>
+                <div className="absolute inset-x-0 -top-[1px] h-[4px] overflow-hidden">
+                  <motion.div
+                    className="h-[2px] w-1/4 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]"
+                    animate={{ x: ["-100%", "400%"] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                  />
+                </div>
               </div>
               
               {/* Step 1 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-1">
                 {/* 1->2 Horizontal line */}
-                <div className="md:hidden absolute top-[27px] left-[50%] w-[calc(100%+16px)] h-[2px] bg-outline-variant/30 -z-10 overflow-hidden rounded-r-full">
-                  <motion.div className="w-[50%] h-full bg-gradient-to-r from-transparent via-orange-500 to-transparent" animate={{ x: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 0 }} />
+                <div className="md:hidden absolute top-[27px] left-[50%] w-[calc(100%+16px)] h-[2px] -z-10">
+                  <div className="absolute inset-0 border-t-[2px] border-dashed border-outline-variant/30"></div>
+                  <div className="absolute inset-x-0 -top-[1px] h-[4px] overflow-hidden">
+                    <motion.div className="w-[50%] h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]" animate={{ x: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 0 }} />
+                  </div>
                 </div>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary-container border-[4px] border-surface flex items-center justify-center mb-sm text-on-surface font-h3 font-bold shadow-sm relative z-10">1</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-xs relative z-10 bg-surface-container-lowest">Konsultasi</h4>
@@ -683,8 +821,11 @@ function Home() {
               {/* Step 2 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-2">
                 {/* 2->3 Vertical line down */}
-                <div className="md:hidden absolute top-[27px] left-[50%] w-[2px] h-[calc(100%+48px)] bg-outline-variant/30 -z-10 overflow-hidden rounded-b-full">
-                  <motion.div className="h-[50%] w-full bg-gradient-to-b from-transparent via-orange-500 to-transparent" animate={{ y: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 0.5 }} />
+                <div className="md:hidden absolute top-[27px] left-[50%] w-[2px] h-[calc(100%+48px)] -z-10">
+                  <div className="absolute inset-0 border-l-[2px] border-dashed border-outline-variant/30"></div>
+                  <div className="absolute inset-y-0 -left-[1px] w-[4px] overflow-hidden">
+                    <motion.div className="h-[50%] w-[2px] bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]" animate={{ y: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 0.5 }} />
+                  </div>
                 </div>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-surface-container-high border-[4px] border-surface flex items-center justify-center mb-sm text-on-surface font-h3 font-bold relative z-10">2</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-[10px] md:text-xs text-on-surface-variant relative z-10 bg-surface-container-lowest">Formulasi</h4>
@@ -693,8 +834,11 @@ function Home() {
               {/* Step 3 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-4 md:order-3">
                 {/* 3->4 Horizontal line (Right to Left) */}
-                <div className="md:hidden absolute top-[27px] right-[50%] w-[calc(100%+16px)] h-[2px] bg-outline-variant/30 -z-10 overflow-hidden rounded-l-full">
-                  <motion.div className="w-[50%] h-full bg-gradient-to-l from-transparent via-orange-500 to-transparent" animate={{ x: ["200%", "-100%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 1 }} />
+                <div className="md:hidden absolute top-[27px] right-[50%] w-[calc(100%+16px)] h-[2px] -z-10">
+                  <div className="absolute inset-0 border-t-[2px] border-dashed border-outline-variant/30"></div>
+                  <div className="absolute inset-x-0 -top-[1px] h-[4px] overflow-hidden">
+                    <motion.div className="w-[50%] h-[2px] bg-gradient-to-l from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]" animate={{ x: ["200%", "-100%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 1 }} />
+                  </div>
                 </div>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-surface-container-high border-[4px] border-surface flex items-center justify-center mb-sm text-on-surface font-h3 font-bold relative z-10">3</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-[10px] md:text-xs text-on-surface-variant relative z-10 bg-surface-container-lowest">Sample</h4>
@@ -703,8 +847,11 @@ function Home() {
               {/* Step 4 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-3 md:order-4">
                 {/* 4->5 Vertical line down */}
-                <div className="md:hidden absolute top-[27px] left-[50%] w-[2px] h-[calc(100%+48px)] bg-outline-variant/30 -z-10 overflow-hidden rounded-b-full">
-                  <motion.div className="h-[50%] w-full bg-gradient-to-b from-transparent via-orange-500 to-transparent" animate={{ y: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 1.5 }} />
+                <div className="md:hidden absolute top-[27px] left-[50%] w-[2px] h-[calc(100%+48px)] -z-10">
+                  <div className="absolute inset-0 border-l-[2px] border-dashed border-outline-variant/30"></div>
+                  <div className="absolute inset-y-0 -left-[1px] w-[4px] overflow-hidden">
+                    <motion.div className="h-[50%] w-[2px] bg-gradient-to-b from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]" animate={{ y: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 1.5 }} />
+                  </div>
                 </div>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-surface-container-high border-[4px] border-surface flex items-center justify-center mb-sm text-on-surface font-h3 font-bold relative z-10">4</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-[10px] md:text-xs text-on-surface-variant relative z-10 bg-surface-container-lowest">Produksi</h4>
@@ -713,8 +860,11 @@ function Home() {
               {/* Step 5 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-5 md:order-5">
                 {/* 5->6 Horizontal line */}
-                <div className="md:hidden absolute top-[27px] left-[50%] w-[calc(100%+16px)] h-[2px] bg-outline-variant/30 -z-10 overflow-hidden rounded-r-full">
-                  <motion.div className="w-[50%] h-full bg-gradient-to-r from-transparent via-orange-500 to-transparent" animate={{ x: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 2 }} />
+                <div className="md:hidden absolute top-[27px] left-[50%] w-[calc(100%+16px)] h-[2px] -z-10">
+                  <div className="absolute inset-0 border-t-[2px] border-dashed border-outline-variant/30"></div>
+                  <div className="absolute inset-x-0 -top-[1px] h-[4px] overflow-hidden">
+                    <motion.div className="w-[50%] h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-80 blur-[1px]" animate={{ x: ["-100%", "200%"] }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear", delay: 2 }} />
+                  </div>
                 </div>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-surface-container-high border-[4px] border-surface flex items-center justify-center mb-sm text-on-surface font-h3 font-bold relative z-10">5</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-[10px] md:text-xs text-on-surface-variant relative z-10 bg-surface-container-lowest">Packaging</h4>
@@ -722,15 +872,22 @@ function Home() {
               
               {/* Step 6 */}
               <div className="relative z-10 flex flex-col items-center text-center w-full md:w-[150px] mx-auto order-6 md:order-6">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-on-surface text-on-primary border-[4px] border-surface flex items-center justify-center mb-sm font-h3 font-bold relative z-10">6</div>
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-emerald-950 to-emerald-600 text-white border-[4px] border-surface flex items-center justify-center mb-sm font-h3 font-bold relative z-10 shadow-md">6</div>
                 <h4 className="font-label-sm text-label-sm text-on-surface mb-xs uppercase tracking-widest text-[10px] md:text-xs text-on-surface-variant relative z-10 bg-surface-container-lowest">Delivery</h4>
               </div>
             </div>
+            
+            <div className="w-full flex justify-center mt-12">
+              <Link to="/proses-pembuatan" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm uppercase tracking-widest text-xs px-8 py-3.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg border border-emerald-500/20 hover:-translate-y-0.5">
+                Lihat Detail Proses Pembuatan
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Legal Section */}
-        <section className="py-12 md:py-margin lg:py-xl bg-surface-container-low" id="legal">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl bg-surface-container-low" id="legal">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="font-h2 text-h2 text-on-surface mb-sm">Legal & Perizinan</h2>
@@ -759,10 +916,10 @@ function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Artikel Section */}
-        <section className="py-12 md:py-margin lg:py-xl overflow-hidden bg-surface-container-lowest" id="artikel">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl overflow-hidden bg-surface-container-lowest" id="artikel">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
               <div className="max-w-2xl">
@@ -818,10 +975,10 @@ function Home() {
               ))}
             </Swiper>
           </div>
-        </section>
+        </motion.section>
 
         {/* Testimoni Section */}
-        <section className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="testimoni">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="testimoni">
           <div className="text-center max-w-[768px] mx-auto mb-12 md:mb-lg">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Apa Kata Klien Kami</h2>
             <p className="font-body-md text-body-md text-on-surface-variant">Kepercayaan mereka adalah bukti komitmen kami terhadap kualitas dan layanan berstandar tinggi.</p>
@@ -897,7 +1054,7 @@ function Home() {
                 >
                   {[...["SMARTBRAIN", "SMART UP PLUS", "VISIONIX", "GROWVIT", "VITARO", "NURVIT"], ...["SMARTBRAIN", "SMART UP PLUS", "VISIONIX", "GROWVIT", "VITARO", "NURVIT"]].map((item, idx) => (
                     <div key={`r1-${idx}`} className="flex items-center justify-center px-4 md:px-8 py-2 md:py-4">
-                       <span className="font-h3 text-lg md:text-2xl lg:text-3xl font-black tracking-tight relative z-10 text-black dark:text-black opacity-90 hover:opacity-100 transition-opacity">{item}</span>
+                       <span className="font-h3 text-lg md:text-2xl lg:text-3xl font-black tracking-tight relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-600 to-emerald-950 dark:from-emerald-300 dark:via-emerald-100 dark:to-emerald-300 opacity-90 hover:opacity-100 transition-all duration-300">{item}</span>
                     </div>
                   ))}
                 </motion.div>
@@ -912,14 +1069,14 @@ function Home() {
                 >
                   {[...["VITARO", "NURVIT", "SMARTBRAIN", "VISIONIX", "SMART UP PLUS", "GROWVIT"], ...["VITARO", "NURVIT", "SMARTBRAIN", "VISIONIX", "SMART UP PLUS", "GROWVIT"]].map((item, idx) => (
                     <div key={`r2-${idx}`} className="flex items-center justify-center px-4 md:px-8 py-2 md:py-4">
-                       <span className="font-h3 text-lg md:text-2xl lg:text-3xl font-black tracking-tight relative z-10 text-black dark:text-black opacity-90 hover:opacity-100 transition-opacity">{item}</span>
+                       <span className="font-h3 text-lg md:text-2xl lg:text-3xl font-black tracking-tight relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-600 to-emerald-950 dark:from-emerald-300 dark:via-emerald-100 dark:to-emerald-300 opacity-90 hover:opacity-100 transition-all duration-300">{item}</span>
                     </div>
                   ))}
                 </motion.div>
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       {/* Footer Component */}
@@ -966,10 +1123,10 @@ function Home() {
               <Mail className="w-4 h-4 shrink-0 mt-0.5" />
               <span>dairynutritionalami@gmail.com</span>
             </a>
-            <div className="normal-case tracking-normal flex items-start gap-2 mt-xs text-on-surface-variant/90">
+            <a aria-label="View our location on Google Maps" href="https://maps.app.goo.gl/KBH1McbbUbe2DsHF9" target="_blank" rel="noopener noreferrer" className="hover:text-on-surface transition-colors normal-case tracking-normal flex items-start gap-2 mt-xs text-on-surface-variant/90">
               <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>CV Dairy Nutrition Alami<br />RT 25 RW 15, Jl.Nanggulan Mendut Petronalan,<br />Kel. Banjaroyo, Kec. Kalibawang,<br />Kab Kulon Progo, Daerah Istimewa Yogyakarta 55672.<br />(dekat SPBU Rafano, depan es teh idaman)</span>
-            </div>
+              <span>CV Dairy Nutrition Alami<br />Jl.Nanggulan Mendut Petronalan,<br />Kel. Banjaroyo, Kec. Kalibawang,<br />Kab Kulon Progo, Daerah Istimewa Yogyakarta 55672.</span>
+            </a>
           </div>
         </div>
       </footer>
@@ -987,7 +1144,7 @@ function ArticleView() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-center px-4">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center text-center px-4 transition-colors duration-500">
         <h2 className="text-3xl font-bold text-on-surface mb-2">Artikel Tidak Ditemukan</h2>
         <p className="text-on-surface-variant mb-6">Maaf, artikel yang Anda cari tidak ada atau telah dipindahkan.</p>
         <Link to="/" className="bg-primary text-on-primary px-6 py-2 rounded-full font-medium inline-flex items-center hover:bg-primary/90 transition-colors">
@@ -998,7 +1155,7 @@ function ArticleView() {
   }
 
   return (
-    <div className="min-h-screen bg-background font-sans text-on-background selection:bg-primary/30 selection:text-on-background">
+    <div className="min-h-screen bg-background font-sans text-on-background selection:bg-primary/30 selection:text-on-background transition-colors duration-500">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -1007,11 +1164,18 @@ function ArticleView() {
             <span className="font-medium text-sm text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Kembali</span>
           </Link>
           <div className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</div>
-          <div className="w-8"></div> {/* Spacer for centering */}
+          <div className="w-[100px] flex justify-end">
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+      <motion.article 
+        initial={{ opacity: 0, y: 30 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6, ease: "easeOut" }} 
+        className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-20"
+      >
         <div className="mb-8">
           <div className="text-primary font-medium text-sm mb-4">{article.date}</div>
           <h1 className="font-h1 text-3xl md:text-5xl lg:text-6xl text-on-surface mb-6 leading-tight tracking-tight">{article.title}</h1>
@@ -1041,7 +1205,7 @@ function ArticleView() {
             Lihat Berita Lainnya <ChevronRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-      </article>
+      </motion.article>
 
       <footer className="bg-surface-container-low border-t border-outline-variant/30 py-8 text-center text-on-surface-variant text-sm">
         <p>© 2026 Dairy Nutrition Alami (DNA). Bio-Innovation in Confectionery.</p>
@@ -1052,14 +1216,19 @@ function ArticleView() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/artikel/:slug" element={<ArticleView />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms-of-service" element={<TermsOfService />} />
-      <Route path="/manufacturing-standards" element={<ManufacturingStandards />} />
-      <Route path="/certifications" element={<Certifications />} />
-      <Route path="/contact-support" element={<ContactSupport />} />
-    </Routes>
+    <>
+      <ScrollProgress />
+      <MouseLighting />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/proses-pembuatan" element={<ProcessPage />} />
+        <Route path="/artikel/:slug" element={<ArticleView />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/manufacturing-standards" element={<ManufacturingStandards />} />
+        <Route path="/certifications" element={<Certifications />} />
+        <Route path="/contact-support" element={<ContactSupport />} />
+      </Routes>
+    </>
   );
 }

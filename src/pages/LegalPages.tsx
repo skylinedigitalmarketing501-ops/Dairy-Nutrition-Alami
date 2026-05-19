@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { motion } from 'motion/react';
+import { ThemeToggle } from '../App';
 
 const PageLayout = ({ title, children }: { title: string, children: React.ReactNode }) => {
   React.useEffect(() => {
@@ -8,7 +10,7 @@ const PageLayout = ({ title, children }: { title: string, children: React.ReactN
   }, []);
 
   return (
-    <div className="min-h-screen bg-background font-sans text-on-background selection:bg-primary/30 selection:text-on-background flex flex-col">
+    <div className="min-h-screen bg-background font-sans text-on-background selection:bg-primary/30 selection:text-on-background flex flex-col transition-colors duration-500">
       <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center group">
@@ -16,15 +18,29 @@ const PageLayout = ({ title, children }: { title: string, children: React.ReactN
             <span className="font-medium text-sm text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Kembali</span>
           </Link>
           <div className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</div>
-          <div className="w-8"></div> {/* Spacer for centering */}
+          <div className="w-[100px] flex justify-end">
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
       <main className="flex-grow max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 w-full">
-        <h1 className="font-h1 text-3xl md:text-5xl lg:text-6xl text-on-surface mb-12 tracking-tight">{title}</h1>
-        <div className="prose prose-lg dark:prose-invert prose-p:text-on-surface-variant prose-p:leading-relaxed prose-headings:text-on-surface max-w-none">
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.6 }} 
+          className="font-h1 text-3xl md:text-5xl lg:text-6xl text-on-surface mb-12 tracking-tight"
+        >
+          {title}
+        </motion.h1>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.6, delay: 0.2 }} 
+          className="prose prose-lg dark:prose-invert prose-p:text-on-surface-variant prose-p:leading-relaxed prose-headings:text-on-surface max-w-none"
+        >
           {children}
-        </div>
+        </motion.div>
       </main>
 
       <footer className="bg-surface-container-low border-t border-outline-variant/30 py-8 text-center text-on-surface-variant text-sm mt-auto">
@@ -131,7 +147,7 @@ export function ContactSupport() {
             </div>
             <div>
               <h3 className="font-bold text-on-surface">Lokasi Pabrik</h3>
-              <p className="text-on-surface-variant">CV Dairy Nutrition Alami<br />RT 25 RW 15, Jl.Nanggulan Mendut Petronalan,<br />Kel. Banjaroyo, Kec. Kalibawang,<br />Kab. Kulon Progo, DIY 55672.</p>
+              <a href="https://maps.app.goo.gl/KBH1McbbUbe2DsHF9" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant hover:text-primary transition-colors block mt-1">CV Dairy Nutrition Alami<br />Jl.Nanggulan Mendut Petronalan,<br />Kel. Banjaroyo, Kec. Kalibawang,<br />Kab Kulon Progo, Daerah Istimewa Yogyakarta 55672.</a>
             </div>
           </div>
         </div>
