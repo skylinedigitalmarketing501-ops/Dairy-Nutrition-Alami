@@ -117,13 +117,13 @@ export const ProcessPage = () => {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         {/* Header Section */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-10 md:mb-14"
         >
           <h1 className="font-h1 text-3xl md:text-5xl lg:text-6xl text-on-surface mb-6 md:mb-8 font-black uppercase tracking-tighter dark:bg-gradient-to-r dark:from-emerald-200 dark:via-emerald-400 dark:to-emerald-200 dark:bg-clip-text dark:text-transparent">
             Detail Proses Pembuatan
@@ -220,7 +220,7 @@ export const ProcessPage = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-20 md:mt-32 text-center bg-primary-container p-8 md:p-12 rounded-[2.5rem] border border-outline-variant/20 relative overflow-hidden"
+          className="mt-12 md:mt-16 text-center bg-primary-container p-8 md:p-12 rounded-[2.5rem] border border-outline-variant/20 relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none"></div>
           <div className="relative z-10">

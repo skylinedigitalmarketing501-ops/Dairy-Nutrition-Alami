@@ -303,9 +303,9 @@ function Home() {
         </AnimatePresence>
       </nav>
 
-      <main className="pt-20 md:pt-24">
+      <main className="pt-20">
         {/* Hero Section */}
-        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-margin lg:py-xl flex flex-col lg:flex-row items-center gap-12 lg:gap-margin" id="home">
+        <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-12" id="home">
           <div className="flex-1 space-y-md z-10 pt-4 md:pt-0">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -381,9 +381,9 @@ function Home() {
         </section>
 
         {/* Why Choose Us */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="bg-surface-container-lowest py-12 md:py-margin lg:py-xl border-y border-surface-variant/50" id="about">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="bg-surface-container-lowest py-8 md:py-12 border-y border-surface-variant/50" id="about">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-[768px] mx-auto mb-lg">
+            <div className="text-center max-w-[768px] mx-auto mb-8 md:mb-10">
               <h2 className="font-h2 text-h2 text-on-surface mb-sm">Kenapa Memilih Dairy Nutrition Alami</h2>
               <p className="font-body-md text-body-md text-on-surface-variant">Keahlian spesifik dengan fasilitas terstandarisasi untuk memastikan produk Anda memimpin pasar.</p>
             </div>
@@ -422,8 +422,8 @@ function Home() {
         </motion.section>
 
         {/* Services Bento Grid */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
-          <h2 className="font-h2 text-h2 text-on-surface mb-8 md:mb-lg text-center">Layanan Maklon Permen Dairy</h2>
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
+          <h2 className="font-h2 text-h2 text-on-surface mb-6 md:mb-8 text-center">Layanan Maklon Permen Dairy</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[250px]">
             <div className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 min-h-[350px] md:min-h-0 rounded-2xl relative overflow-hidden group border border-outline-variant/20">
               <img 
@@ -556,13 +556,13 @@ function Home() {
         </AnimatePresence>
 
         {/* R&D Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="rnd">
-          <div className="mb-lg text-center max-w-[768px] mx-auto">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="rnd">
+          <div className="mb-6 md:mb-8 text-center max-w-[768px] mx-auto">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Formulasi & R&D Eksekutif</h2>
             <p className="font-body-md text-body-md text-on-surface-variant">Inovasi yang didukung oleh sains. Tim R&D kami siap mewujudkan visi produk unik Anda dengan presisi dan standar kualitas tertinggi.</p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-margin items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 md:mb-10 items-center">
             <div className="space-y-6">
               {/* Pusat Inovasi Card */}
               <div className="bg-surface p-6 sm:p-8 rounded-[2rem] border border-outline-variant/30 shadow-sm relative overflow-hidden group hover:border-outline-variant/50 transition-colors">
@@ -625,8 +625,8 @@ function Home() {
           </div>
 
           {/* R&D Process Breakdown */}
-          <div className="mt-xl">
-            <div className="text-center max-w-[768px] mx-auto mb-lg">
+          <div className="mt-8 md:mt-10">
+            <div className="text-center max-w-[768px] mx-auto mb-6 md:mb-8">
               <h3 className="font-h2 text-h2 text-on-surface mb-xs">Tahapan Maklon Kami</h3>
               <p className="font-body-md text-on-surface-variant text-sm">Proses pengembangan produk dan manufaktur yang terstruktur untuk mewujudkan brand Anda dari konsep hingga siap edar.</p>
             </div>
@@ -736,13 +736,13 @@ function Home() {
         </motion.section>
 
         {/* Portofolio Products Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl overflow-hidden relative" id="products">
-          <div className="text-center max-w-[768px] mx-auto mb-10 md:mb-12 px-4">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 overflow-hidden relative" id="products">
+          <div className="text-center max-w-[768px] mx-auto mb-6 md:mb-8 px-4">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Portofolio Produk</h2>
             <p className="font-body-md text-on-surface-variant">Berbagai inovasi nutrisi premium yang telah sukses kami produksi untuk klien kami.</p>
           </div>
           
-          <div className="max-w-[1000px] mx-auto px-4">
+          <div className="max-w-[760px] mx-auto px-4">
             <Swiper
               effect={'coverflow'}
               grabCursor={true}
@@ -754,16 +754,16 @@ function Home() {
                 disableOnInteraction: false,
               }}
               coverflowEffect={{
-                rotate: 20,
+                rotate: 15,
                 stretch: 0,
-                depth: 250,
+                depth: 140,
                 modifier: 1,
                 slideShadows: true,
               }}
               pagination={{ clickable: true, dynamicBullets: true }}
               navigation={true}
               modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-              className="w-full pb-16 pt-4"
+              className="w-full pb-8 pt-2"
             >
               {[
                 "https://imgmu.id/f/53c4175.png",
@@ -774,13 +774,13 @@ function Home() {
                 "https://imgmu.id/f/5585e5f.png",
                 "https://imgmu.id/f/c2ba04f.png"
               ].map((imgUrl, idx) => (
-                <SwiperSlide key={idx} className="w-[280px] sm:w-[350px] md:w-[450px]">
-                  <div className="relative w-full aspect-square rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
+                <SwiperSlide key={idx} className="w-[190px] sm:w-[230px] md:w-[270px]">
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_12px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
                     <img src={imgUrl} alt={`Portofolio Produk Dairy Nutrition Alami ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-emerald-900/40 to-transparent opacity-80 pointer-events-none transition-opacity duration-300 group-hover:opacity-100"></div>
-                    <div className="absolute bottom-6 left-6 right-6 text-white pointer-events-none drop-shadow-md">
-                      <div className="font-label-sm uppercase tracking-widest text-white/80 dark:text-zinc-300 mb-1 text-[10px] md:text-xs">Premium Product</div>
-                      <div className="font-h3 text-lg md:text-xl font-bold dark:bg-gradient-to-b dark:from-emerald-200 dark:to-emerald-400 dark:bg-clip-text dark:text-transparent">Inovasi Suplemen</div>
+                    <div className="absolute bottom-4 left-4 right-4 text-white pointer-events-none drop-shadow-md">
+                      <div className="font-label-sm uppercase tracking-widest text-white/80 dark:text-zinc-300 mb-0.5 text-[9px] md:text-[10px]">Premium Product</div>
+                      <div className="font-h3 text-sm md:text-base font-bold dark:bg-gradient-to-b dark:from-emerald-200 dark:to-emerald-400 dark:bg-clip-text dark:text-transparent">Inovasi Suplemen</div>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -790,9 +790,9 @@ function Home() {
         </motion.section>
 
         {/* Process Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl bg-surface-container-lowest border-y border-surface-variant/50" id="process">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 bg-surface-container-lowest border-y border-surface-variant/50" id="process">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-h2 text-h2 text-on-surface mb-12 flex justify-center text-center">Proses Maklon Mudah</h2>
+            <h2 className="font-h2 text-h2 text-on-surface mb-8 md:mb-10 flex justify-center text-center">Proses Maklon Mudah</h2>
             <div className="grid grid-cols-2 md:flex md:flex-row justify-between items-start relative gap-y-12 gap-x-4 md:gap-0">
               <div className="hidden md:block absolute top-[28px] md:top-[32px] left-[5%] w-[90%] h-[2px] z-0">
                 <div className="absolute inset-0 border-t-[2px] border-dashed border-outline-variant/30"></div>
@@ -877,7 +877,7 @@ function Home() {
               </div>
             </div>
             
-            <div className="w-full flex justify-center mt-12">
+            <div className="w-full flex justify-center mt-8 md:mt-10">
               <Link to="/proses-pembuatan" className="group flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm uppercase tracking-widest text-xs px-8 py-3.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg border border-emerald-500/20 hover:-translate-y-0.5">
                 Lihat Detail Proses Pembuatan
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -887,14 +887,14 @@ function Home() {
         </motion.section>
 
         {/* Legal Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl bg-surface-container-low" id="legal">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 bg-surface-container-low" id="legal">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div className="text-center mb-6 md:mb-8">
               <h2 className="font-h2 text-h2 text-on-surface mb-sm">Legal & Perizinan</h2>
               <p className="font-body-md text-on-surface-variant">Fasilitas dan produk kami terdaftar dan diawasi oleh lembaga berwenang untuk menjamin keamanan dan standar kualitas tertinggi.</p>
             </div>
             
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
               {[
                 { src: "https://imgmu.id/f/c35f86c.png", alt: "Sertifikasi 1", delay: 0.1 },
                 { src: "https://imgmu.id/f/3f1b084.png", alt: "Sertifikasi 2", delay: 0.2 },
@@ -919,9 +919,9 @@ function Home() {
         </motion.section>
 
         {/* Artikel Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl overflow-hidden bg-surface-container-lowest" id="artikel">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 overflow-hidden bg-surface-container-lowest" id="artikel">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 gap-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 md:mb-8 gap-6">
               <div className="max-w-2xl">
                 <h2 className="font-h2 text-h2 text-on-surface mb-sm">Wawasan & Inovasi</h2>
                 <p className="font-body-md text-on-surface-variant">Fakta mengejutkan dan temuan terbaru seputar nutrisi, vitamin, dan teknologi makanan.</p>
@@ -948,7 +948,7 @@ function Home() {
                 nextEl: '.swiper-button-next-article',
               }}
               modules={[Navigation]}
-              className="w-full pb-8"
+              className="w-full pb-6"
             >
               {articles.map((article) => (
                 <SwiperSlide key={article.id} className="h-auto">
@@ -978,8 +978,8 @@ function Home() {
         </motion.section>
 
         {/* Testimoni Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-12 md:py-margin lg:py-xl max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="testimoni">
-          <div className="text-center max-w-[768px] mx-auto mb-12 md:mb-lg">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="testimoni">
+          <div className="text-center max-w-[768px] mx-auto mb-8 md:mb-10">
             <h2 className="font-h2 text-h2 text-on-surface mb-sm">Apa Kata Klien Kami</h2>
             <p className="font-body-md text-body-md text-on-surface-variant">Kepercayaan mereka adalah bukti komitmen kami terhadap kualitas dan layanan berstandar tinggi.</p>
           </div>
@@ -1040,7 +1040,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="mt-12 md:mt-16 relative overflow-hidden">
+          <div className="mt-8 md:mt-10 relative overflow-hidden">
             <div className="absolute top-0 left-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
             <div className="absolute top-0 right-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
             
@@ -1080,7 +1080,7 @@ function Home() {
       </main>
 
       {/* Footer Component */}
-      <footer className="bg-surface-container-low w-full border-t border-outline-variant/30 font-label-sm text-xs uppercase tracking-widest text-on-surface-variant py-12 md:py-16 mt-8" id="contact">
+      <footer className="bg-surface-container-low w-full border-t border-outline-variant/30 font-label-sm text-xs uppercase tracking-widest text-on-surface-variant py-8 md:py-12 mt-4" id="contact">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-2 lg:col-span-2">
             <div className="text-lg font-bold text-on-surface mb-sm capitalize tracking-tight font-h3">Dairy Nutrition Alami</div>
@@ -1214,11 +1214,41 @@ function ArticleView() {
   );
 }
 
+export const FloatingWhatsApp = () => {
+  const whatsappUrl = "https://wa.me/6282225613106?text=Halo%20Tim%20Dairy%20Nutrition%20Alami%2C%20saya%20tertarik%20untuk%20berkonsultasi%20mengenai%20layanan%20maklon%20permen.%20Boleh%20minta%20waktunya%20sebentar%3F";
+
+  return (
+    <aside aria-label="WhatsApp Floating Action" className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 flex items-center group">
+      {/* Tooltip on hover */}
+      <span className="hidden sm:inline-flex items-center mr-3 px-3.5 py-1.5 bg-zinc-900/90 dark:bg-zinc-100/95 text-white dark:text-zinc-900 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap border border-white/10 dark:border-zinc-300/50">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+        Chat WhatsApp Kami
+      </span>
+
+      <motion.a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat WhatsApp Langsung"
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
+        className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.45)] hover:shadow-[0_6px_28px_rgba(37,211,102,0.65)] hover:bg-[#20ba59] transition-all duration-300"
+      >
+        <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-25 pointer-events-none"></span>
+        <svg className="w-6 h-6 sm:w-8 sm:h-8 fill-current relative z-10" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+      </motion.a>
+    </aside>
+  );
+};
+
 export default function App() {
   return (
     <>
       <ScrollProgress />
       <MouseLighting />
+      <FloatingWhatsApp />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/proses-pembuatan" element={<ProcessPage />} />
