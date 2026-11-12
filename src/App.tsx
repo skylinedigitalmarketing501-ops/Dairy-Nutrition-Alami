@@ -96,7 +96,7 @@ export const MouseLighting = () => {
 const portfolioProducts = [
   {
     id: 1,
-    img: "/src/assets/images/smartbrain_candy_1794465737583.jpg",
+    img: "/images/smartbrain_candy_1794465737583.jpg",
     name: "SMARTBRAIN",
     category: "Pressed Milk Candy",
     desc: "Formula nutrisi otak dengan DHA & multivitamin padat alami.",
@@ -104,7 +104,7 @@ const portfolioProducts = [
   },
   {
     id: 2,
-    img: "/src/assets/images/smartup_tablet_1794465737066.jpg",
+    img: "/images/smartup_tablet_1794465737066.jpg",
     name: "SMART UP PLUS",
     category: "Chewable Milk Tablet",
     desc: "Dukungan pertumbuhan tinggi badan & stamina anak dengan kalsium bio-aktif.",
@@ -112,7 +112,7 @@ const portfolioProducts = [
   },
   {
     id: 3,
-    img: "/src/assets/images/visionix_lozenges_1794465738404.jpg",
+    img: "/images/visionix_lozenges_1794465738404.jpg",
     name: "VISIONIX",
     category: "Lozenges Eye Care",
     desc: "Permen susu hisap dengan ekstrak Bilberry & Lutein perlindungan mata.",
@@ -120,7 +120,7 @@ const portfolioProducts = [
   },
   {
     id: 4,
-    img: "/src/assets/images/growvit_candy_1794465738656.jpg",
+    img: "/images/growvit_candy_1794465738656.jpg",
     name: "GROWVIT",
     category: "Tablet Candy",
     desc: "Kombinasi Kalsium Murni dan Vitamin D3 untuk kekuatan tulang & gigi optimal.",
@@ -128,7 +128,7 @@ const portfolioProducts = [
   },
   {
     id: 5,
-    img: "/src/assets/images/vitaro_lozenges_1794465738508.jpg",
+    img: "/images/vitaro_lozenges_1794465738508.jpg",
     name: "VITARO",
     category: "Herbal Throat Lozenges",
     desc: "Sensasi mint lembut dan ekstrak herbal alami penyejuk tenggorokan higienis.",
@@ -136,7 +136,7 @@ const portfolioProducts = [
   },
   {
     id: 6,
-    img: "/src/assets/images/nurvit_chewable_1794465739685.jpg",
+    img: "/images/nurvit_chewable_1794465739685.jpg",
     name: "NURVIT PRO",
     category: "Immune Chewable",
     desc: "Konsentrat susu kolostrum dan Zinc penunjang sistem imun harian keluarga.",
@@ -144,7 +144,7 @@ const portfolioProducts = [
   },
   {
     id: 7,
-    img: "/src/assets/images/colostrum_tablet_1794465739161.jpg",
+    img: "/images/colostrum_tablet_1794465739161.jpg",
     name: "DNA COLOSTRUM",
     category: "Bovine Colostrum",
     desc: "Tablet kunyah bio-aktif kaya imunoglobulin alami dengan cita rasa vanila susu.",
@@ -180,13 +180,21 @@ export const PortfolioSection = () => {
         </div>
 
         {/* 3D Coverflow Stage */}
-        <div className="max-w-[780px] mx-auto px-2 sm:px-4">
+        <div className="max-w-[820px] mx-auto px-2 sm:px-4 min-h-[220px] sm:min-h-[260px] md:min-h-[290px] flex items-center justify-center">
           <Swiper
             effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
             slidesPerView={'auto'}
             initialSlide={0}
+            observer={true}
+            observeParents={true}
+            watchSlidesProgress={true}
+            onSwiper={(swiper) => {
+              setTimeout(() => {
+                swiper.update();
+              }, 120);
+            }}
             mousewheel={{
               releaseOnEdges: true,
               sensitivity: 1,
@@ -212,12 +220,12 @@ export const PortfolioSection = () => {
             className="w-full pb-6 pt-2"
           >
             {portfolioProducts.map((item) => (
-              <SwiperSlide key={item.id} className="w-[170px] sm:w-[205px] md:w-[245px]">
-                <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
+              <SwiperSlide key={item.id} className="!w-[180px] sm:!w-[215px] md:!w-[245px] shrink-0">
+                <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)] border border-outline-variant/30 bg-surface-container group transition-transform duration-300">
                   <img
                     src={item.img}
                     alt={item.name}
-                    referrerPolicy="no-referrer"
+                    loading="eager"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   
@@ -895,7 +903,7 @@ function Home() {
               <img 
                 alt="Pressed Milk Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                src="https://imgmu.id/f/c49995b.jpg" 
+                src="/images/service_pressed_milk.jpg" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/65 to-zinc-950/20"></div>
               
@@ -937,7 +945,7 @@ function Home() {
               <img 
                 alt="Lozenges Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                src="https://imgmu.id/f/2b71e4f.jpg" 
+                src="/images/service_lozenges.jpg" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/20"></div>
               
@@ -971,7 +979,7 @@ function Home() {
               <img 
                 alt="Tablet Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                src="https://imgmu.id/f/5df1580.jpg" 
+                src="/images/service_tablet.jpg" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/20"></div>
               
@@ -1318,13 +1326,13 @@ function Home() {
               <img 
                 alt="Lab scientists working" 
                 className="w-full h-[280px] sm:h-[350px] md:h-[500px] object-cover rounded-[2rem] sm:rounded-[3rem] shadow-xl border border-outline-variant/20 relative z-10 transition-transform duration-1000 hover:scale-[1.02]" 
-                src="https://imgmu.id/f/f5fd290.png" 
+                src="/images/logo_dna_large.png" 
               />
               <div className="absolute -bottom-6 -left-2 sm:-bottom-10 sm:-left-6 p-2 bg-surface rounded-[2rem] z-20 shadow-xl hidden xs:block">
                 <img 
                   alt="Dairy powder close-up" 
                   className="w-32 h-32 md:w-48 md:h-48 object-cover rounded-[1.5rem] bg-white border border-outline-variant/20" 
-                  src="https://images.unsplash.com/photo-1563636619-e9143da7973b?q=80&w=1000&auto=format&fit=crop" 
+                  src="/images/dairy_powder.jpg" 
                 />
               </div>
             </div>
@@ -1583,11 +1591,11 @@ function Home() {
             
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
               {[
-                { src: "https://imgmu.id/f/c35f86c.png", alt: "Sertifikasi 1", delay: 0.1 },
-                { src: "https://imgmu.id/f/3f1b084.png", alt: "Sertifikasi 2", delay: 0.2 },
-                { src: "https://imgmu.id/f/5b2d2ad.png", alt: "Sertifikasi 3", delay: 0.3 },
-                { src: "https://imgmu.id/f/c66a1fe.png", alt: "Sertifikasi 4", delay: 0.4 },
-                { src: "https://imgmu.id/f/516a4b1.png", alt: "Sertifikasi 5", delay: 0.5 }
+                { src: "/images/cert_1.png", alt: "Sertifikasi 1", delay: 0.1 },
+                { src: "/images/cert_2.png", alt: "Sertifikasi 2", delay: 0.2 },
+                { src: "/images/cert_3.png", alt: "Sertifikasi 3", delay: 0.3 },
+                { src: "/images/cert_4.png", alt: "Sertifikasi 4", delay: 0.4 },
+                { src: "/images/cert_5.png", alt: "Sertifikasi 5", delay: 0.5 }
               ].map((img, index) => (
                 <motion.div
                   key={index}
