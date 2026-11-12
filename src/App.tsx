@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from 'react-router-dom';
-import { Menu, X, FlaskConical, BadgeCheck, TestTube2, Boxes, Microscope, SlidersHorizontal, CheckCircle2, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Loader2, Clock, Target, Star, Quote, Info, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
-import { animate, motion, AnimatePresence, useScroll, useSpring, useTransform } from 'motion/react';
+import { Menu, X, FlaskConical, BadgeCheck, TestTube2, Boxes, Microscope, SlidersHorizontal, CheckCircle2, MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Loader2, Clock, Target, Star, Quote, Info, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight, Sparkles, Layers, ShieldCheck, FileText, Volume2, VolumeX } from 'lucide-react';
+import { animate, motion, AnimatePresence } from 'motion/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Navigation, Autoplay, Mousewheel } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
@@ -54,22 +54,6 @@ export const ThemeToggle = () => {
   );
 };
 
-export const ScrollProgress = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-primary origin-left z-[100] drop-shadow-[0_0_8px_rgba(255,152,0,0.5)]"
-      style={{ scaleX }}
-    />
-  );
-};
-
 export const MouseLighting = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -109,12 +93,224 @@ export const MouseLighting = () => {
   );
 };
 
+const portfolioProducts = [
+  {
+    id: 1,
+    img: "/src/assets/images/smartbrain_candy_1794465737583.jpg",
+    name: "SMARTBRAIN",
+    category: "Pressed Milk Candy",
+    desc: "Formula nutrisi otak dengan DHA & multivitamin padat alami.",
+    badge: "Bestseller"
+  },
+  {
+    id: 2,
+    img: "/src/assets/images/smartup_tablet_1794465737066.jpg",
+    name: "SMART UP PLUS",
+    category: "Chewable Milk Tablet",
+    desc: "Dukungan pertumbuhan tinggi badan & stamina anak dengan kalsium bio-aktif.",
+    badge: "High Calcium"
+  },
+  {
+    id: 3,
+    img: "/src/assets/images/visionix_lozenges_1794465738404.jpg",
+    name: "VISIONIX",
+    category: "Lozenges Eye Care",
+    desc: "Permen susu hisap dengan ekstrak Bilberry & Lutein perlindungan mata.",
+    badge: "Herbal Extract"
+  },
+  {
+    id: 4,
+    img: "/src/assets/images/growvit_candy_1794465738656.jpg",
+    name: "GROWVIT",
+    category: "Tablet Candy",
+    desc: "Kombinasi Kalsium Murni dan Vitamin D3 untuk kekuatan tulang & gigi optimal.",
+    badge: "Bone Health"
+  },
+  {
+    id: 5,
+    img: "/src/assets/images/vitaro_lozenges_1794465738508.jpg",
+    name: "VITARO",
+    category: "Herbal Throat Lozenges",
+    desc: "Sensasi mint lembut dan ekstrak herbal alami penyejuk tenggorokan higienis.",
+    badge: "Sugar Free"
+  },
+  {
+    id: 6,
+    img: "/src/assets/images/nurvit_chewable_1794465739685.jpg",
+    name: "NURVIT PRO",
+    category: "Immune Chewable",
+    desc: "Konsentrat susu kolostrum dan Zinc penunjang sistem imun harian keluarga.",
+    badge: "Immunity"
+  },
+  {
+    id: 7,
+    img: "/src/assets/images/colostrum_tablet_1794465739161.jpg",
+    name: "DNA COLOSTRUM",
+    category: "Bovine Colostrum",
+    desc: "Tablet kunyah bio-aktif kaya imunoglobulin alami dengan cita rasa vanila susu.",
+    badge: "Exclusive"
+  }
+];
+
+export const PortfolioSection = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="py-10 md:py-14 bg-surface-container-lowest/60 border-y border-surface-variant/40 overflow-hidden relative"
+      id="products"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center max-w-[640px] mx-auto mb-6 md:mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-label-sm text-[10px] md:text-xs uppercase tracking-widest mb-2 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Scroll & Swipe 3D Showcase
+          </div>
+          <h2 className="font-h2 text-2xl sm:text-3xl md:text-4xl text-on-surface font-black tracking-tight mb-2">
+            Portofolio Produk
+          </h2>
+          <p className="font-body-md text-on-surface-variant text-sm md:text-base leading-relaxed">
+            Scroll mousewheel atau geser gambar untuk menjelajah variasi produk. Foto utama berada di tengah dengan produk berikutnya di kanan dan kiri belakang.
+          </p>
+        </div>
+
+        {/* 3D Coverflow Stage */}
+        <div className="max-w-[780px] mx-auto px-2 sm:px-4">
+          <Swiper
+            effect={'coverflow'}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={'auto'}
+            initialSlide={0}
+            mousewheel={{
+              releaseOnEdges: true,
+              sensitivity: 1,
+            }}
+            coverflowEffect={{
+              rotate: 22,
+              stretch: 0,
+              depth: 140,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            pagination={{ 
+              clickable: true, 
+              dynamicBullets: true,
+              el: '.portfolio-pagination',
+            }}
+            navigation={{
+              prevEl: '.portfolio-prev',
+              nextEl: '.portfolio-next',
+            }}
+            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            modules={[EffectCoverflow, Pagination, Navigation, Mousewheel]}
+            className="w-full pb-6 pt-2"
+          >
+            {portfolioProducts.map((item) => (
+              <SwiperSlide key={item.id} className="w-[170px] sm:w-[205px] md:w-[245px]">
+                <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  
+                  {/* Subtle dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/85 via-emerald-950/20 to-transparent pointer-events-none"></div>
+
+                  {/* Top Badge */}
+                  <div className="absolute top-2.5 left-2.5 z-10">
+                    <span className="text-[8px] sm:text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-sm">
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  {/* Card Title info */}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 text-white pointer-events-none drop-shadow-md">
+                    <div className="font-label-sm uppercase tracking-widest text-emerald-300 text-[8px] sm:text-[9px] mb-0.5">
+                      {item.category}
+                    </div>
+                    <div className="font-h3 text-xs sm:text-sm font-bold truncate">
+                      {item.name}
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* Active Product Details & Controls */}
+        <div className="max-w-[460px] mx-auto text-center px-4 mt-2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="mb-3"
+            >
+              <div className="text-sm sm:text-base font-bold text-on-surface font-h3 mb-0.5">
+                {portfolioProducts[activeIndex].name} • <span className="text-emerald-700 dark:text-emerald-400 font-medium">{portfolioProducts[activeIndex].category}</span>
+              </div>
+              <p className="text-xs sm:text-sm text-on-surface-variant line-clamp-2 leading-relaxed">
+                {portfolioProducts[activeIndex].desc}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Controls & Pagination */}
+          <div className="flex items-center justify-center gap-4">
+            <button
+              aria-label="Previous Slide"
+              className="portfolio-prev w-8 h-8 rounded-full border border-outline-variant/40 flex items-center justify-center transition-all hover:bg-primary-container text-on-surface active:scale-95 cursor-pointer shadow-xs"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Pagination container */}
+            <div className="portfolio-pagination flex items-center justify-center min-w-[80px]"></div>
+
+            <button
+              aria-label="Next Slide"
+              className="portfolio-next w-8 h-8 rounded-full border border-outline-variant/40 flex items-center justify-center transition-all hover:bg-primary-container text-on-surface active:scale-95 cursor-pointer shadow-xs"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="mt-2 text-[10px] uppercase tracking-widest text-on-surface-variant/70 font-label-sm">
+            Produk {activeIndex + 1} dari {portfolioProducts.length} • Scroll mousewheel atau geser untuk melihat produk berikutnya
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
 // ... keep existing code
 function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState<string | null>(null);
   const [expandedService, setExpandedService] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('home');
+  const [isHeroVideoMuted, setIsHeroVideoMuted] = useState(true);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleHeroVideoMute = () => {
+    if (heroVideoRef.current) {
+      const nextMuted = !isHeroVideoMuted;
+      heroVideoRef.current.muted = nextMuted;
+      setIsHeroVideoMuted(nextMuted);
+    }
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -134,18 +330,199 @@ function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [activeSection]);
 
-  const serviceDetails: Record<string, { title: string, content: string }> = {
+  const serviceDetails: Record<string, {
+    title: string;
+    badge: string;
+    tagline: string;
+    description: string;
+    specs: { label: string; value: string }[];
+    ingredients: string[];
+    packaging: string[];
+    workflow: string[];
+    guarantees: string[];
+    waMessage: string;
+  }> = {
     'pressed-milk': {
-      title: 'Pressed Milk Candy',
-      content: 'Kami menggunakan bahan baku berkualitas tinggi dan teknologi modern untuk menghasilkan permen susu yang memiliki tekstur sempurna, rasa yang kaya, dan umur simpan yang optimal. Ideal untuk berbagai segmen pasar, mulai dari anak-anak hingga dewasa. Layanan ini mencakup kustomisasi bentuk, warna, dan penambahan nutrisi spesifik sesuai dengan kebutuhan brand Anda.'
+      title: 'Pressed Milk Candy (Permen Susu Padat)',
+      badge: 'Spesialisasi Manufaktur DNA',
+      tagline: 'Pencetakan kempa dingin (Direct Cold Compression) bertekanan tinggi tanpa pemanasan, mengunci 100% bio-aktivitas kalsium, kolostrum, dan vitamin.',
+      description: 'Layanan maklon permen susu padat premium yang diformulasikan khusus dengan bahan susu sapi murni New Zealand, konsentrat whey, bovine colostrum, dan kalsium susu alami. Mesin rotary tablet press kami mampu mencetak hingga 500.000 butir per hari dengan akurasi bobot dan kekerasan tablet yang presisi, bebas retak, dan memiliki tekstur lumer yang lembut di mulut.',
+      specs: [
+        { label: 'Bentuk Tablet', value: 'Bulat, Oval, Hati, Koin Emboss Logo, Karakter Kustom' },
+        { label: 'Bobot Tablet', value: '500 mg – 1.500 mg per butir (sesuai spesifikasi)' },
+        { label: 'Kadar Air (Water Activity)', value: '< 0.25 Aw (sangat stabil, tahan simpan hingga 24 bulan)' },
+        { label: 'Kapasitas Mesin', value: 'Hingga 500.000 tablet / hari (Rotary High-Speed Press)' },
+        { label: 'Kerapuhan (Friability)', value: '< 0.8% (kuat saat pengiriman, renyah & lumer di mulut)' }
+      ],
+      ingredients: [
+        'Susu Skim & Full Cream New Zealand murni kualitas prima',
+        'Bovine Colostrum kaya IgG (Imunoglobulin alami penunjang imun)',
+        'Kalsium Bio-Aktif & Vitamin D3/K2 untuk kepadatan tulang',
+        'Omega-3 DHA mikroenkapsulasi tanpa aroma/rasa amis',
+        'Pilihan Pemanis: Sukrosa murni, Zero-Calorie Stevia, Xylitol, atau Isomalt'
+      ],
+      packaging: [
+        'Blister Pack Alu-Alu (10 / 12 butir per strip) – perlindungan kelembaban maksimal',
+        'Blister PVC Transparan / Blister gantung display supermarket & modern retail',
+        'Botol Plastik HDPE Food-Grade / Amber Glass (isi 30, 60, 90 tablet) segel induksi',
+        'Standing Pouch Foil dengan Ziplock kedap udara (isi 15 – 30 butir)'
+      ],
+      workflow: [
+        'Fase 1: Konsultasi Konsep, Target Pasar, & Formulasi Rasa Produk',
+        'Fase 2: Pembuatan Sampel Laboratorium (Trial Prototipe R&D Gratis)',
+        'Fase 3: Uji Organoleptik & Penyesuaian Profil Rasa / Tekstur',
+        'Fase 4: Pendaftaran Legalitas Izin Edar BPOM MD & Sertifikat Halal',
+        'Fase 5: Pengadaan Kemasan & Produksi Massal Berstandar CPPOB/GMP',
+        'Fase 6: Quality Control Akhir, Uji Lab Mikrobiologi, & Rilis COA'
+      ],
+      guarantees: [
+        'Izin Edar BPOM RI MD Resmi atas nama brand Anda',
+        'Sertifikasi Halal BPJPH / MUI (SJPH HAS 23000)',
+        'Certificate of Analysis (COA) per batch dari Lab Terakreditasi KAN',
+        'Kerahasiaan Formula dijamin dengan Non-Disclosure Agreement (NDA)'
+      ],
+      waMessage: 'Halo Tim DNA, saya ingin berkonsultasi mengenai layanan maklon Pressed Milk Candy untuk brand saya.'
     },
     'lozenges': {
-      title: 'Lozenges Candy',
-      content: 'Diformulasikan khusus dengan bahan-bahan aktif seperti ekstrak herbal, mint, atau bahan alami lainnya yang dapat memberikan sensasi melegakan tenggorokan dan menyegarkan napas dengan efektivitas tinggi. Sangat diminati sebagai permen fungsional bernilai jual tinggi dengan potensi kustomisasi yang luas.'
+      title: 'Functional & Throat Lozenges (Permen Hisap Pelega)',
+      badge: 'Permen Fungsional & Herbal',
+      tagline: 'Pelepasan zat aktif orofaringeal bertahap (10–15 menit) untuk melapisi mukosa tenggorokan dan meredakan iritasi secara efektif.',
+      description: 'Layanan maklon permen hisap fungsional untuk pelega tenggorokan, batuk kering, sariawan, dan penyegar napas higienis. Matriks padatan dirancang khusus dengan laju kelarutan lambat terukur, memungkinkan zat aktif herbal seperti mentol, peppermint, ekstrak jahe merah, propolis, dan vitamin diserap optimal melalui jaringan kapiler sublingual dan buccal mukosa mulut.',
+      specs: [
+        { label: 'Waktu Larut (Dissolution)', value: '10 – 15 menit konsisten di rongga mulut' },
+        { label: 'Bentuk Sediaan', value: 'Bulat bikonveks, lonjong halus tanpa sudut tajam' },
+        { label: 'Kadar Gula', value: 'Pilihan Sugar-Free (Isomalt & Xylitol) atau Gula Alami' },
+        { label: 'Kapasitas Produksi', value: '400.000 lozenges per hari' },
+        { label: 'Ketahanan Suhu', value: 'Tahan leleh pada iklim tropis Indonesia' }
+      ],
+      ingredients: [
+        'Ekstrak Daun Peppermint & Menthol Crystal kemurnian tinggi',
+        'Ekstrak Jahe Merah terstandar gingerol antioksidan',
+        'Ekstrak Propolis Lebah murni anti-inflamasi alami',
+        'Ekstrak Bilberry & Lutein untuk perlindungan kesehatan mata',
+        'Vitamin C Buffered (ramah lambung) & Zinc mineral penunjang imun'
+      ],
+      packaging: [
+        'Blister Alu-Alu Kedap Udara (isi 6, 8, atau 12 tablet per strip)',
+        'Kotak Kaleng Mewah (Tin Can Packaging) dengan segel hologram',
+        'Sachet Individual Sealed (satuan dalam dus dispenser display retail)'
+      ],
+      workflow: [
+        'Fase 1: Analisis Dosis Zat Aktif & Target Efek Terapeutik',
+        'Fase 2: Formulasi Profil Rasa Herbal / Mint yang Menyegarkan',
+        'Fase 3: Uji Laju Pelarutan Orofaringeal & Stabilitas Bahan Aktif',
+        'Fase 4: Registrasi BPOM MD & Sertifikasi Halal BPJPH',
+        'Fase 5: Manufaktur Cleanroom & Pengemasan Blistering Otomatis'
+      ],
+      guarantees: [
+        'Standar Higienitas CPPOB / GMP Pangan Fungsional',
+        'Uji Laboratorium Bebas Logam Berat & Bebas Cemaran Mikroba',
+        'Legalitas Izin Edar MD Resmi BPOM RI & Sertifikat Halal'
+      ],
+      waMessage: 'Halo Tim DNA, saya ingin berkonsultasi mengenai maklon Permen Hisap Lozenges untuk brand saya.'
     },
     'tablet': {
-      title: 'Tablet Candy',
-      content: 'Sangat cocok untuk produk multivitamin, suplemen kesehatan, atau produk nutrisi khusus. Kami mengontrol dosis dengan akurasi tinggi pada setiap bentuk tablet. Fasilitas kami mampu memproduksi tablet dalam beberapa ukuran dan bentuk untuk memastikan suplemen atau nutrisi didistribusikan secara presisi dalam setiap sajiannya.'
+      title: 'Chewable Tablet Candy (Tablet Kunyah Multivitamin)',
+      badge: 'Nutrisi & Suplemen Kunyah',
+      tagline: 'Akurasi dosis mikronutrien tinggi dengan rasa buah susu lezat yang menutupi rasa pahit vitamin bagi anak maupun dewasa.',
+      description: 'Maklon tablet kunyah suplemen untuk kebutuhan multivitamin harian, kesehatan tulang, sistem imun, dan pertumbuhan anak. Dengan teknologi rasa canggih (taste masking), kami memastikan zat aktif seperti kalsium, zat besi, zinc, dan vitamin tidak berasa pahit atau getir, melainkan memiliki sensasi rasa stroberi, jeruk, vanila susu, atau cokelat yang sangat digemari konsumen.',
+      specs: [
+        { label: 'Presisi Dosis', value: 'Akurasi takaran zat aktif 98% – 102% per tablet' },
+        { label: 'Bobot Tablet', value: '600 mg – 1.200 mg per butir' },
+        { label: 'Kekerasan (Hardness)', value: '5 – 8 kg/cm² (renyah dikunyah, tidak mudah hancur saat kirim)' },
+        { label: 'Keseragaman Kandungan', value: 'Memenuhi Farmakope & Standar AKG BPOM' }
+      ],
+      ingredients: [
+        'Multivitamin Lengkap (Vitamin A, B-Kompleks, C, D3, E)',
+        'Mineral Esensial (Kalsium Karbonat/Laktat, Zinc, Zat Besi)',
+        'Konsentrat Ekstrak Buah Asli & Perisa Alami Food Grade',
+        'Serat Pangan Alami & Prebiotik Inulin / FOS pendukung pencernaan'
+      ],
+      packaging: [
+        'Botol Plastik PET/HDPE Tutup Child-Resistant / Flip-top',
+        'Blister Pack Strip gantung untuk toko kelontong & apotek',
+        'Pouch Ziplock praktis travel-friendly'
+      ],
+      workflow: [
+        'Fase 1: Perhitungan Angka Kecukupan Gizi (AKG) Sesuai Regulasi BPOM',
+        'Fase 2: Uji Masking Rasa Pahit & Homogenitas Campuran Granulasi',
+        'Fase 3: Trial Batch & Uji Stabilitas Dipercepat (Accelerated Stability)',
+        'Fase 4: Registrasi Izin Edar BPOM MD & Sertifikat Halal',
+        'Fase 5: Produksi Massal, Pengemasan Botol/Blister, & Distribusi'
+      ],
+      guarantees: [
+        'Klaim Nutrisi (Nutrition Facts) Terverifikasi Uji Lab KAN',
+        'Legalitas Izin Edar MD Resmi BPOM RI',
+        'Jaminan Mutu Halal BPJPH & GMP'
+      ],
+      waMessage: 'Halo Tim DNA, saya ingin berkonsultasi mengenai maklon Tablet Kunyah Nutrisi untuk brand saya.'
+    },
+    'one-stop-maklon': {
+      title: 'Layanan One-Stop Maklon (End-to-End Turnkey)',
+      badge: 'Solusi Lengkap Pabrik Maklon',
+      tagline: 'Mulai dari riset formulasi, izin legalitas BPOM & Halal, desain kemasan, hingga produk jadi siap kirim ke gudang Anda.',
+      description: 'Solusi lengkap bagi brand owner, entrepreneur, distributor farmasi, maupun perusahaan FMCG yang ingin meluncurkan produk kembang gula fungsional tanpa beban investasi pabrik miliaran rupiah dan perizinan yang rumit. Tim ahli Dairy Nutrition Alami (DNA) bertindak sebagai fasilitas manufaktur resmi brand Anda dari awal hingga siap dipasarkan.',
+      specs: [
+        { label: 'Cakupan Layanan', value: 'Hulu ke Hilir (R&D, Legalitas, Desain, Manufaktur, Lab)' },
+        { label: 'Waktu Peluncuran', value: 'Cepat & Terjadwal (3 - 8 Minggu tergantung izin)' },
+        { label: 'Kapasitas Pabrik', value: 'Ratusan ribu butir / hari dengan mesin rotary modern' },
+        { label: 'Fasilitas Produksi', value: 'Cleanroom Bertekanan Positif Berstandar CPPOB / GMP' }
+      ],
+      ingredients: [
+        'Penyediaan Bahan Baku Impor & Lokal dengan Dokumen COA Lengkap',
+        'Formulasi Kustom R&D Eksklusif khusus brand Anda',
+        'Bahan Kemas Food-Grade Berstandar Farmasi & Pangan'
+      ],
+      packaging: [
+        'Desain Grafis Kemasan Komersial Gratis (Blister, Botol, Dus Sekunder)',
+        'Pencetakan Kemasan Primer & Sekunder Berlisensi',
+        'Barcode GS1 & Format Label BPOM Sesuai Regulasi Terbaru'
+      ],
+      workflow: [
+        'Fase 1: Konsultasi Kebutuhan Produk, Target Pasar & Estimasi HPP',
+        'Fase 2: Pembuatan Sampel Formula R&D & Penandatanganan NDA Kerahasiaan',
+        'Fase 3: Pendaftaran Izin Edar BPOM MD & Sertifikasi Halal BPJPH',
+        'Fase 4: Finalisasi Desain Kemasan Komersial & Pengadaan Material',
+        'Fase 5: Produksi Massal di Cleanroom & In-Process Quality Control (IPC)',
+        'Fase 6: Uji Mikrobiologi Lab KAN, Penerbitan COA, & Pengiriman ke Gudang Anda'
+      ],
+      guarantees: [
+        'Izin Edar BPOM MD 100% Legal & Terdaftar di SIINas',
+        'Sertifikat Halal Resmi BPJPH / MUI',
+        'Kerahasiaan Formula Dilindungi Kontrak Hukum Non-Disclosure Agreement (NDA)',
+        'Pendampingan Teknis Pemasaran & Regulasi Klaim Label Iklan'
+      ],
+      waMessage: 'Halo Tim DNA, saya ingin berkonsultasi mengenai paket One-Stop Maklon lengkap dari nol untuk brand saya.'
+    },
+    'skema-kerjasama': {
+      title: 'Skema Kerjasama Maklon (Toll Manufacturing)',
+      badge: 'Pilihan Model Kerjasama B2B',
+      tagline: 'Pilihan model kerjasama maklon yang disesuaikan dengan kapasitas modal, kesiapan formula, dan target waktu peluncuran brand Anda.',
+      description: 'Pabrik maklon modern kami menyediakan 3 model kontrak manufaktur yang fleksibel untuk berbagai profil mitra: pemilik brand baru (startup/influencer), apotek & klinik kesehatan, hingga korporasi FMCG dan distributor farmasi besar.',
+      specs: [
+        { label: '1. Full Maklon (Turnkey)', value: 'DNA siapkan seluruh formulasi, izin BPOM, kemasan, hingga produksi jadi' },
+        { label: '2. Private Label (Fast Launch)', value: 'Gunakan formula unggulan DNA yang sudah teruji stabil untuk peluncuran kilat' },
+        { label: '3. Toll Manufacturing', value: 'Klien menyediakan spesifikasi/formula khusus, DNA memproses & mengemas' },
+        { label: 'MOQ (Minimum Order)', value: 'Kompetitif dan dapat disesuaikan bertahap sesuai skala bisnis' }
+      ],
+      ingredients: [
+        'Formula Kustom Eksklusif Milik Klien atau Formula Unggulan DNA',
+        'Fleksibilitas Pengadaan Bahan Baku (Disediakan Klien atau Pabrik DNA)'
+      ],
+      packaging: [
+        'Kustomisasi Penuh Kemasan Blister, Botol, Sachet, dan Outer Box'
+      ],
+      workflow: [
+        'Langkah 1: Pilih Model Kerjasama yang Sesuai dengan Kebutuhan Brand',
+        'Langkah 2: Perhitungan Biaya HPP Transparan & Penandatanganan Kontrak',
+        'Langkah 3: Pelaksanaan Produksi Sesuai Skema Pilihan Hingga Selesai'
+      ],
+      guarantees: [
+        'Transparansi Biaya Produksi Tanpa Ada Biaya Tersembunyi',
+        'Kepatuhan Standar Mutu CPPOB / GMP & Audit Fasilitas Pabrik Terbuka',
+        'Jaminan Ketepatan Waktu Pengiriman Sesuai Service Level Agreement (SLA)'
+      ],
+      waMessage: 'Halo Tim DNA, saya ingin menanyakan rincian skema kerjasama maklon dan ketentuan MOQ untuk produk kembang gula.'
     }
   };
 
@@ -206,19 +583,31 @@ function Home() {
   };
 
   return (
-    <div className="bg-background text-on-background font-body-md antialiased overflow-x-hidden min-h-screen transition-colors duration-500">
+    <div className="bg-background text-on-background font-body-md antialiased overflow-x-clip min-h-screen transition-colors duration-500">
       {/* TopNavBar Component */}
       <nav className="fixed top-0 w-full z-50 bg-stone-50/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-orange-100/50 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-          <motion.div 
-            className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-600 to-emerald-950 dark:from-emerald-200 dark:via-emerald-400 dark:to-emerald-200"
-            style={{ backgroundSize: '200% auto' }}
-            animate={{ backgroundPosition: ['0% center', '200% center'] }}
-            transition={{ duration: 8, ease: 'linear', repeat: Infinity }}
+          <a 
+            href="#home" 
+            onClick={(e) => handleNavScroll(e, 'home')}
+            className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer"
+            aria-label="Dairy Nutrition Alami Home"
           >
-            Dairy Nutrition Alami
-          </motion.div>
-          <div className="hidden md:flex gap-md font-manrope tracking-tight text-sm font-semibold">
+            <img 
+              src="/logo.png" 
+              alt="Logo Dairy Nutrition Alami" 
+              className="h-9 sm:h-10 w-auto object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-105" 
+            />
+            <motion.div 
+              className="text-lg sm:text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-emerald-950 via-emerald-600 to-emerald-950 dark:from-emerald-200 dark:via-emerald-400 dark:to-emerald-200"
+              style={{ backgroundSize: '200% auto' }}
+              animate={{ backgroundPosition: ['0% center', '200% center'] }}
+              transition={{ duration: 8, ease: 'linear', repeat: Infinity }}
+            >
+              Dairy Nutrition Alami
+            </motion.div>
+          </a>
+          <div className="hidden md:flex gap-6 font-manrope tracking-tight text-sm font-semibold">
             {[
               { id: 'home', label: 'Home' },
               { id: 'services', label: 'Services' },
@@ -238,13 +627,13 @@ function Home() {
               </a>
             ))}
           </div>
-          <div className="hidden lg:flex gap-sm items-center">
-            <a href="#contact" onClick={(e) => handleAction(e, 'nav-project', 'contact')} className="bg-white text-on-surface dark:text-zinc-900 font-label-sm px-md py-sm rounded-lg hover:bg-white hover:text-on-surface dark:hover:text-zinc-900 active:bg-white active:text-on-surface dark:active:text-zinc-900 transition-transform duration-300 scale-95 active:scale-90 border border-outline-variant/30 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-sm">
+          <div className="hidden lg:flex gap-3 items-center">
+            <a href="#contact" onClick={(e) => handleAction(e, 'nav-project', 'contact')} className="bg-white text-on-surface dark:text-zinc-900 font-label-sm px-5 py-2.5 rounded-lg hover:bg-white hover:text-on-surface dark:hover:text-zinc-900 active:bg-white active:text-on-surface dark:active:text-zinc-900 transition-transform duration-300 scale-95 active:scale-90 border border-outline-variant/30 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-sm">
               {isNavigating === 'nav-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin text-on-surface dark:text-zinc-900" /> : null}
               Mulai Proyek Anda
             </a>
             <div className="flex items-center">
-              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'nav-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-md py-sm rounded-lg transition-all duration-300 scale-95 active:scale-90 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-md border border-emerald-500/20">
+              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'nav-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-5 py-2.5 rounded-lg transition-all duration-300 scale-95 active:scale-90 uppercase tracking-widest text-[11px] inline-flex items-center justify-center sm:min-w-[140px] shadow-md border border-emerald-500/20">
                 {isNavigating === 'nav-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 Konsultasi Gratis
               </a>
@@ -289,11 +678,11 @@ function Home() {
               ))}
               <hr className="border-outline-variant/30 my-4 mx-4" />
               <div className="flex flex-col gap-3 px-2 pb-4">
-                <a href="#contact" onClick={(e) => handleAction(e, 'mobile-project', 'contact')} className="bg-primary-container text-on-surface font-label-sm px-md py-3 rounded-xl border border-outline-variant/30 text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform">
-                  {isNavigating === 'mobile-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                <a href="#contact" onClick={(e) => handleAction(e, 'mobile-project', 'contact')} className="bg-primary-container text-on-surface font-label-sm px-5 py-3 rounded-xl border border-outline-variant/30 text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform">
+                  {isNavigating === 'mobile-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin text-on-surface dark:text-zinc-900" /> : null}
                   Mulai Proyek Anda
                 </a>
-                <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'mobile-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-md py-3 rounded-xl text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform shadow-md border border-emerald-500/20">
+                <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'mobile-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-5 py-3 rounded-xl text-center uppercase tracking-widest text-[11px] flex items-center justify-center min-h-[44px] active:scale-[0.98] transition-transform shadow-md border border-emerald-500/20">
                   {isNavigating === 'mobile-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                   Konsultasi Gratis
                 </a>
@@ -306,12 +695,12 @@ function Home() {
       <main className="pt-20">
         {/* Hero Section */}
         <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 lg:py-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-12" id="home">
-          <div className="flex-1 space-y-md z-10 pt-4 md:pt-0">
+          <div className="flex-1 space-y-6 z-10 pt-4 md:pt-0">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-block bg-primary-container text-on-surface font-label-sm px-sm py-xs rounded-full border border-outline-variant/30 uppercase tracking-widest text-xs"
+              className="inline-block bg-primary-container text-on-surface font-label-sm px-3.5 py-1 rounded-full border border-outline-variant/30 uppercase tracking-widest text-xs"
             >
               B2B Contract Manufacturing
             </motion.div>
@@ -353,30 +742,93 @@ function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.7 }}
-              className="flex flex-wrap gap-sm pt-sm"
+              className="flex flex-wrap gap-3 pt-3"
             >
-              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'hero-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-6 sm:px-lg py-2 sm:py-sm rounded-lg transition-all shadow-md border border-emerald-500/20 h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[160px] w-full sm:w-auto">
+              <a href={whatsappUrl} onClick={(e) => handleWhatsapp(e, 'hero-consult')} className="bg-gradient-to-r from-emerald-950 to-emerald-600 hover:from-emerald-900 hover:to-emerald-500 text-white font-label-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg transition-all shadow-md border border-emerald-500/20 h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[160px] w-full sm:w-auto">
                 {isNavigating === 'hero-consult' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 Konsultasi Gratis
               </a>
-              <a href="#contact" onClick={(e) => handleAction(e, 'hero-project', 'contact')} className="bg-primary-container text-on-surface font-label-sm px-6 sm:px-lg py-2 sm:py-sm rounded-lg border border-outline-variant/30 hover:bg-surface-container-highest transition-colors h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[170px] w-full sm:w-auto">
+              <a href="#contact" onClick={(e) => handleAction(e, 'hero-project', 'contact')} className="bg-primary-container text-on-surface font-label-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg border border-outline-variant/30 hover:bg-surface-container-highest transition-colors h-11 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center sm:min-w-[170px] w-full sm:w-auto">
                 {isNavigating === 'hero-project' ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                 Mulai Proyek Anda
               </a>
             </motion.div>
+
+            {/* Symmetrical Trust Badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.85 }}
+              className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-on-surface-variant font-medium"
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>Izin Edar BPOM MD & Halal</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>Kapasitas 500k Butir/Hari</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>Trial Sampel R&D Eksklusif</span>
+              </div>
+            </motion.div>
           </div>
+
+          {/* Right Column: Hero Showcase Video */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="flex-1 w-full relative mt-4 md:mt-0"
+            className="flex-1 w-full flex justify-center items-center relative mt-6 lg:mt-0"
           >
-            <div className="absolute inset-0 bg-primary-container rounded-[2rem] md:rounded-3xl -rotate-3 scale-105 opacity-50 z-0"></div>
-            <img 
-              alt="Hero Image" 
-              className="w-full h-[280px] md:h-[500px] object-cover rounded-[2rem] md:rounded-3xl shadow-sm border border-outline-variant/20 relative z-10" 
-              src="https://imgmu.id/f/32295e5.jpg" 
-            />
+            {/* Perfectly Symmetrical Ambient Glow */}
+            <div className="absolute inset-0 max-w-[320px] sm:max-w-[350px] lg:max-w-[370px] mx-auto aspect-[9/16] bg-gradient-to-tr from-emerald-500/25 via-teal-500/20 to-emerald-400/25 rounded-[2.5rem] blur-2xl -z-10"></div>
+            
+            {/* Video Showcase Card */}
+            <div className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[370px] aspect-[9/16] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-emerald-600/30 dark:border-emerald-400/25 bg-zinc-950 group">
+              <video 
+                ref={heroVideoRef}
+                src="/assets/aistudio/Membuat_video_dari_empat_gambar_91a2d2fd_4280e1d7.mp4" 
+                autoPlay 
+                loop 
+                muted={isHeroVideoMuted}
+                playsInline 
+                className="w-full h-full object-cover rounded-[1.9rem] sm:rounded-[2.4rem]"
+              />
+              
+              {/* Subtle top overlay gradient for readability */}
+              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 via-black/20 to-transparent pointer-events-none z-10" />
+
+              {/* Floating Top Controls */}
+              <div className="absolute top-3 sm:top-4 inset-x-3 sm:inset-x-4 flex items-center justify-between z-20">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-[11px] font-semibold border border-white/20 shadow-md">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Showcase Produk</span>
+                </div>
+                <button
+                  onClick={toggleHeroVideoMute}
+                  aria-label={isHeroVideoMuted ? "Aktifkan Suara" : "Matikan Suara"}
+                  className="p-2 rounded-full bg-black/50 hover:bg-black/75 backdrop-blur-md text-white transition-all hover:scale-105 border border-white/20 shadow-md cursor-pointer"
+                  title={isHeroVideoMuted ? "Klik untuk aktifkan audio" : "Klik untuk bisukan audio"}
+                >
+                  {isHeroVideoMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+                </button>
+              </div>
+
+              {/* Bottom Info Glass Card */}
+              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none z-10" />
+              <div className="absolute bottom-3 sm:bottom-4 inset-x-3 sm:inset-x-4 p-3 rounded-2xl bg-black/65 backdrop-blur-md border border-white/20 text-white shadow-xl z-20">
+                <div className="flex items-center justify-between text-[10px] uppercase font-bold text-emerald-300 tracking-wider">
+                  <span>4 Varian Rasa DNA</span>
+                  <span className="text-white/70">Kempa Dingin</span>
+                </div>
+                <div className="text-xs font-semibold text-white/95 mt-0.5 truncate">
+                  Matcha • Strawberry • Madu • Pisang
+                </div>
+              </div>
+            </div>
           </motion.div>
         </section>
 
@@ -384,37 +836,37 @@ function Home() {
         <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="bg-surface-container-lowest py-8 md:py-12 border-y border-surface-variant/50" id="about">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-[768px] mx-auto mb-8 md:mb-10">
-              <h2 className="font-h2 text-h2 text-on-surface mb-sm">Kenapa Memilih Dairy Nutrition Alami</h2>
+              <h2 className="font-h2 text-h2 text-on-surface mb-3">Kenapa Memilih Dairy Nutrition Alami</h2>
               <p className="font-body-md text-body-md text-on-surface-variant">Keahlian spesifik dengan fasilitas terstandarisasi untuk memastikan produk Anda memimpin pasar.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Feature Card */}
-              <div className="p-md rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
+              <div className="p-6 rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
                 <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}>
-                  <FlaskConical className="w-8 h-8 text-tertiary mb-sm" />
+                  <FlaskConical className="w-8 h-8 text-tertiary mb-3" />
                 </motion.div>
-                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-xs">Specialist in Pressed Milk</h3>
+                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-1.5 font-bold">Specialist in Pressed Milk</h3>
                 <p className="font-body-md text-body-md text-on-surface-variant text-sm">Fokus mendalam pada teknologi pembuatan permen susu padat dan lozenges.</p>
               </div>
-              <div className="p-md rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
+              <div className="p-6 rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
                 <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}>
-                  <BadgeCheck className="w-8 h-8 text-tertiary mb-sm" />
+                  <BadgeCheck className="w-8 h-8 text-tertiary mb-3" />
                 </motion.div>
-                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-xs">Quality Dairy Ingredients</h3>
+                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-1.5 font-bold">Quality Dairy Ingredients</h3>
                 <p className="font-body-md text-body-md text-on-surface-variant text-sm">Hanya menggunakan bahan baku susu premium yang teruji klinis.</p>
               </div>
-              <div className="p-md rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
+              <div className="p-6 rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
                 <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
-                  <TestTube2 className="w-8 h-8 text-tertiary mb-sm" />
+                  <TestTube2 className="w-8 h-8 text-tertiary mb-3" />
                 </motion.div>
-                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-xs">Custom Formula & R&D</h3>
+                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-1.5 font-bold">Custom Formula & R&D</h3>
                 <p className="font-body-md text-body-md text-on-surface-variant text-sm">Tim R&D berpengalaman untuk menciptakan formulasi unik brand Anda.</p>
               </div>
-              <div className="p-md rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
+              <div className="p-6 rounded-xl border border-primary-container bg-surface hover:bg-surface-container-highest transition-colors duration-300">
                 <motion.div animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}>
-                  <Boxes className="w-8 h-8 text-tertiary mb-sm" />
+                  <Boxes className="w-8 h-8 text-tertiary mb-3" />
                 </motion.div>
-                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-xs">Competitive MOQ</h3>
+                <h3 className="font-h3 text-h3 text-on-surface text-lg mb-1.5 font-bold">Competitive MOQ</h3>
                 <p className="font-body-md text-body-md text-on-surface-variant text-sm">Sangat fleksibel untuk brand baru maupun ekspansi perusahaan besar.</p>
               </div>
             </div>
@@ -422,103 +874,238 @@ function Home() {
         </motion.section>
 
         {/* Services Bento Grid */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
-          <h2 className="font-h2 text-h2 text-on-surface mb-6 md:mb-8 text-center">Layanan Maklon Permen Dairy</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[250px]">
-            <div className="col-span-1 md:col-span-2 row-span-1 md:row-span-2 min-h-[350px] md:min-h-0 rounded-2xl relative overflow-hidden group border border-outline-variant/20">
+        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="services">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide uppercase mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              Toll Manufacturing Sediaan Kembang Gula Fungsional
+            </div>
+            <h2 className="font-h2 text-2xl sm:text-3xl md:text-4xl font-extrabold text-on-surface mb-3 tracking-tight">
+              Layanan Maklon Permen Dairy & Herbal
+            </h2>
+            <p className="font-body-md text-sm sm:text-base text-on-surface-variant leading-relaxed">
+              Fasilitas manufaktur kontrak terintegrasi hulu-ke-hilir berstandar <strong>CPPOB / GMP</strong> & <strong>Izin Edar BPOM MD</strong>. Melayani formulasi R&D sampel kustom, perizinan legalitas resmi, desain kemasan, hingga manufaktur massal berkapasitas tinggi.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Pressed Milk Candy (Hero Card) */}
+            <div className="col-span-1 md:col-span-2 rounded-2xl md:rounded-3xl relative overflow-hidden group border border-outline-variant/30 bg-surface shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[360px] md:min-h-[380px]">
               <img 
                 alt="Pressed Milk Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 src="https://imgmu.id/f/c49995b.jpg" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1c1c]/95 via-[#1a1c1c]/50 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 p-6 md:p-lg w-full z-10">
-                <div className="bg-white/20 backdrop-blur-sm text-white font-label-sm px-sm py-xs rounded-full inline-block mb-sm border border-white/30 uppercase tracking-widest text-[10px]">Layanan Utama</div>
-                <h3 className="font-h3 text-h3 text-white mb-xs drop-shadow-sm flex items-center gap-2">
-                  Pressed Milk Candy
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
-                      Pressed Milk Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
-                    </div>
-                  </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/65 to-zinc-950/20"></div>
+              
+              {/* Top Tags */}
+              <div className="relative z-10 p-6 md:p-8 flex flex-wrap items-center justify-between gap-2">
+                <span className="bg-emerald-600/90 text-white font-label-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-xs shadow-xs">
+                  Format Unggulan DNA
+                </span>
+                <span className="bg-white/20 text-white backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium border border-white/20">
+                  Direct Cold Compression
+                </span>
+              </div>
+
+              {/* Bottom Content */}
+              <div className="relative z-10 p-6 md:p-8">
+                <h3 className="font-h3 text-2xl sm:text-3xl text-white font-extrabold mb-2 flex items-center gap-2">
+                  Pressed Milk Candy (Permen Susu Padat)
                 </h3>
-                <p className="font-body-md text-body-md text-white/90 max-w-[448px] drop-shadow-sm transition-all duration-300">
-                  Solusi permen susu padat premium dengan profil rasa dan nutrisi yang dapat disesuaikan.
-                  <button onClick={(e) => { e.preventDefault(); toggleService('pressed-milk'); }} className="text-white hover:text-white/80 font-bold underline mt-1 block text-sm transition-colors">Baca Selengkapnya</button>
+                <p className="font-body-md text-white/90 text-sm sm:text-base mb-4 max-w-2xl leading-relaxed">
+                  Teknologi kempa dingin tanpa pemanasan ekstrem untuk menjaga keutuhan protein susu murni New Zealand, bovine colostrum IgG, dan bio-kalsium. Tekstur padat renyah yang lumer lembut di rongga mulut.
                 </p>
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-[11px] bg-white/15 text-white px-2.5 py-1 rounded-md backdrop-blur-xs">Kapasitas 500k butir/hari</span>
+                  <span className="text-[11px] bg-white/15 text-white px-2.5 py-1 rounded-md backdrop-blur-xs">Water Activity &lt; 0.25 Aw</span>
+                  <span className="text-[11px] bg-white/15 text-white px-2.5 py-1 rounded-md backdrop-blur-xs">Bisa Emboss Logo Brand</span>
+                </div>
+                <button 
+                  onClick={(e) => { e.preventDefault(); toggleService('pressed-milk'); }} 
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-900 font-bold text-xs uppercase tracking-wider hover:bg-emerald-500 hover:text-white transition-all shadow-md group-hover:translate-x-1"
+                >
+                  Lihat Spesifikasi & Alur Maklon
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
             
-            <div className="min-h-[220px] md:min-h-0 rounded-2xl relative overflow-hidden group border border-outline-variant/20 bg-surface-container">
+            {/* Card 2: Lozenges Candy */}
+            <div className="col-span-1 rounded-2xl md:rounded-3xl relative overflow-hidden group border border-outline-variant/30 bg-surface-container shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[320px]">
               <img 
                 alt="Lozenges Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 src="https://imgmu.id/f/2b71e4f.jpg" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1c1c]/90 to-transparent opacity-80 z-0"></div>
-              <div className="p-md h-full flex flex-col justify-end relative z-10">
-                <h3 className="font-h3 text-h3 text-white text-xl mb-xs drop-shadow-sm flex items-center gap-2">
-                  Lozenges Candy
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
-                      Lozenges Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
-                    </div>
-                  </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/20"></div>
+              
+              <div className="relative z-10 p-6 flex items-center justify-between">
+                <span className="bg-teal-600/90 text-white font-label-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-xs">
+                  Pelega & Herbal
+                </span>
+                <span className="text-[11px] bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-xs">
+                  10-15 Min Dissolution
+                </span>
+              </div>
+
+              <div className="relative z-10 p-6">
+                <h3 className="font-h3 text-xl sm:text-2xl text-white font-bold mb-2">
+                  Functional Lozenges Candy
                 </h3>
-                <p className="font-body-md text-body-md text-white/90 text-sm drop-shadow-sm transition-all duration-300">
-                  Permen hisap fungsional untuk pelega tenggorokan.
-                  <button onClick={(e) => { e.preventDefault(); toggleService('lozenges'); }} className="text-white hover:text-white/80 font-bold underline mt-1 block text-xs transition-colors">Baca Selengkapnya</button>
+                <p className="font-body-md text-white/90 text-xs sm:text-sm mb-4 leading-relaxed">
+                  Permen hisap pelega tenggorokan dengan pelepasan lambat terkendali. Diformulasikan dengan peppermint, ekstrak jahe merah, propolis, dan vitamin C. Pilihan Sugar-Free dengan Isomalt & Xylitol.
                 </p>
+                <button 
+                  onClick={(e) => { e.preventDefault(); toggleService('lozenges'); }} 
+                  className="inline-flex items-center gap-1.5 text-emerald-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                >
+                  Spesifikasi & Kemasan Blister &rarr;
+                </button>
               </div>
             </div>
             
-            <div className="min-h-[220px] md:min-h-0 rounded-2xl relative overflow-hidden group border border-outline-variant/20 bg-primary-container">
+            {/* Card 3: Chewable Tablet Candy */}
+            <div className="col-span-1 rounded-2xl md:rounded-3xl relative overflow-hidden group border border-outline-variant/30 bg-primary-container shadow-sm hover:shadow-md transition-all flex flex-col justify-between min-h-[320px]">
               <img 
                 alt="Tablet Candy" 
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 src="https://imgmu.id/f/5df1580.jpg" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1c1c]/90 to-transparent opacity-80 z-0"></div>
-              <div className="p-md h-full flex flex-col justify-end relative z-10">
-                <h3 className="font-h3 text-h3 text-white text-xl mb-xs drop-shadow-sm flex items-center gap-2">
-                  Tablet Candy
-                  <div className="relative group/tooltip inline-flex items-center">
-                    <Info className="w-4 h-4 md:w-5 md:h-5 text-white/70 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gradient-to-br from-emerald-950 to-emerald-800 border border-emerald-500/30 text-white font-body-md text-xs whitespace-nowrap rounded opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all pointer-events-none drop-shadow-xl">
-                      Tablet Candy
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-emerald-900 drop-shadow-sm"></div>
-                    </div>
-                  </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/20"></div>
+              
+              <div className="relative z-10 p-6 flex items-center justify-between">
+                <span className="bg-amber-600/90 text-white font-label-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-xs">
+                  Multivitamin Kunyah
+                </span>
+                <span className="text-[11px] bg-white/20 text-white px-2.5 py-1 rounded-full backdrop-blur-xs">
+                  Taste Masking
+                </span>
+              </div>
+
+              <div className="relative z-10 p-6">
+                <h3 className="font-h3 text-xl sm:text-2xl text-white font-bold mb-2">
+                  Chewable Tablet Candy
                 </h3>
-                <p className="font-body-md text-body-md text-white/90 text-sm drop-shadow-sm transition-all duration-300">
-                  Format tablet presisi untuk suplemen dan nutrisi.
-                  <button onClick={(e) => { e.preventDefault(); toggleService('tablet'); }} className="text-white hover:text-white/80 font-bold underline mt-1 block text-xs transition-colors">Baca Selengkapnya</button>
+                <p className="font-body-md text-white/90 text-xs sm:text-sm mb-4 leading-relaxed">
+                  Tablet kunyah mikronutrien presisi tinggi dengan teknologi penyamaran rasa pahit vitamin (taste masking). Sangat disukai anak dan dewasa dengan varian rasa buah susu segar.
                 </p>
+                <button 
+                  onClick={(e) => { e.preventDefault(); toggleService('tablet'); }} 
+                  className="inline-flex items-center gap-1.5 text-amber-300 hover:text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                >
+                  Spesifikasi & Dosis AKG &rarr;
+                </button>
               </div>
             </div>
-            
-            <div className="col-span-1 md:col-span-3 rounded-2xl p-md border border-outline-variant/20 bg-surface flex flex-col sm:flex-row justify-between items-center gap-md">
+
+            {/* Card 4: One-Stop Maklon (Turnkey Solusi Lengkap) */}
+            <div className="col-span-1 md:col-span-2 rounded-2xl md:rounded-3xl p-6 sm:p-8 border border-emerald-500/30 bg-gradient-to-br from-emerald-950/90 via-zinc-900 to-emerald-950/90 text-white shadow-sm flex flex-col justify-between">
               <div>
-                <h3 className="font-h3 text-h3 text-on-surface text-xl mb-xs">Functional, Supplement & Herbal Candy</h3>
-                <p className="font-body-md text-body-md text-on-surface-variant text-sm max-w-[576px]">Inovasi formulasi yang menggabungkan manfaat ekstrak herbal, vitamin, dan nutrisi fungsional lainnya ke dalam format permen yang lezat.</p>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
+                    <BadgeCheck className="w-4 h-4 text-emerald-400" />
+                    Layanan End-to-End Turnkey
+                  </div>
+                  <span className="text-xs text-zinc-400 font-mono">Bebas Repot Izin & Investasi Mesin</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2">
+                  One-Stop Maklon: Dari Formulasi Hingga Produk Siap Jual
+                </h3>
+                <p className="text-sm text-zinc-300 leading-relaxed max-w-2xl mb-6">
+                  Anda cukup membawa ide atau konsep produk, tim profesional DNA menangani seluruh rantai manufaktur: peracikan sampel R&D gratis, pengurusan <strong>Izin Edar BPOM MD</strong>, <strong>Sertifikasi Halal BPJPH</strong>, desain kemasan komersial, hingga uji lab mikrobiologi dengan rilis COA.
+                </p>
+
+                {/* 4 Pillars Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mx-auto flex items-center justify-center mb-2">
+                      <FlaskConical className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <div className="text-xs font-bold text-white">R&D Sampel</div>
+                    <div className="text-[10px] text-zinc-400 mt-0.5">Trial Prototipe Gratis</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mx-auto flex items-center justify-center mb-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <div className="text-xs font-bold text-white">Izin BPOM & Halal</div>
+                    <div className="text-[10px] text-zinc-400 mt-0.5">100% Legalitas Resmi</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mx-auto flex items-center justify-center mb-2">
+                      <Boxes className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <div className="text-xs font-bold text-white">Desain Kemasan</div>
+                    <div className="text-[10px] text-zinc-400 mt-0.5">Blister, Botol & Dus</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mx-auto flex items-center justify-center mb-2">
+                      <FileText className="w-4 h-4 text-emerald-400" />
+                    </div>
+                    <div className="text-xs font-bold text-white">Uji Lab & COA</div>
+                    <div className="text-[10px] text-zinc-400 mt-0.5">Lab KAN Terakreditasi</div>
+                  </div>
+                </div>
               </div>
-              <a href="#products" onClick={(e) => handleNavScroll(e, 'products')} className="bg-surface-container-high text-on-surface font-label-sm px-4 md:px-md py-2 md:py-sm rounded-lg hover:bg-outline-variant transition-colors whitespace-nowrap h-10 md:h-12 uppercase tracking-widest text-[10px] md:text-xs inline-flex items-center justify-center cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">Lihat Katalog</a>
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
+                <span className="text-xs text-zinc-400 text-center sm:text-left">
+                  Didukung fasilitas cleanroom bertekanan positif & mesin high-speed rotary.
+                </span>
+                <button 
+                  onClick={(e) => { e.preventDefault(); toggleService('one-stop-maklon'); }} 
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs uppercase tracking-wider transition-colors text-center shadow-md cursor-pointer"
+                >
+                  Pelajari Alur One-Stop Maklon &rarr;
+                </button>
+              </div>
+            </div>
+
+            {/* Card 5: 3 Skema Kerjasama Maklon (Toll Manufacturing Models) */}
+            <div className="col-span-1 md:col-span-3 rounded-2xl md:rounded-3xl p-6 sm:p-8 border border-outline-variant/30 bg-surface shadow-sm">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div className="max-w-2xl">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    Pilihan Skema Kerjasama Fleksibel
+                  </div>
+                  <h3 className="font-h3 text-xl sm:text-2xl text-on-surface font-extrabold mb-2">
+                    Sesuaikan Skema Maklon dengan Kesiapan Bisnis Brand Anda
+                  </h3>
+                  <p className="font-body-md text-on-surface-variant text-xs sm:text-sm leading-relaxed">
+                    Kami menyediakan 3 model kontrak kemitraan: <strong>Full Maklon (Turnkey)</strong> untuk solusi lengkap dari nol, <strong>Private Label</strong> untuk peluncuran kilat memakai formula siap edar DNA, dan <strong>Toll Manufacturing</strong> murni bagi perusahaan yang telah memiliki spesifikasi formulasi sendiri.
+                  </p>
+                </div>
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full lg:w-auto shrink-0">
+                  <button 
+                    onClick={(e) => { e.preventDefault(); toggleService('skema-kerjasama'); }} 
+                    className="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-surface-container-high hover:bg-outline-variant text-on-surface text-xs font-bold uppercase tracking-wider transition-colors text-center border border-outline-variant/40"
+                  >
+                    Bandingkan 3 Skema Maklon
+                  </button>
+                  <a 
+                    href="#products" 
+                    onClick={(e) => handleNavScroll(e, 'products')} 
+                    className="flex-1 sm:flex-none px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-bold uppercase tracking-wider hover:from-emerald-700 hover:to-teal-700 transition-all text-center shadow-md whitespace-nowrap"
+                  >
+                    Lihat Portofolio Produk &rarr;
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </motion.section>
 
-        {/* Modal Layanan */}
+        {/* Modal Layanan Maklon Komprehensif */}
         <AnimatePresence>
           {expandedService && serviceDetails[expandedService] && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-emerald-950/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm overflow-y-auto"
               onClick={closeServiceModal}
             >
               <motion.div
@@ -526,28 +1113,147 @@ function Home() {
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="w-[90vw] md:w-[500px] max-w-[95vw] shadow-xl overflow-hidden pointer-events-auto bg-white dark:bg-zinc-950 rounded-2xl md:rounded-3xl border border-zinc-200 dark:border-zinc-800"
+                className="w-full max-w-3xl my-auto shadow-2xl overflow-hidden pointer-events-auto bg-white dark:bg-zinc-900 rounded-2xl md:rounded-3xl border border-zinc-200 dark:border-zinc-800 flex flex-col max-h-[90vh]"
                 onClick={e => e.stopPropagation()}
               >
-                <div className="p-6 md:p-8 flex flex-col relative w-full h-full">
+                {/* Header */}
+                <div className="p-6 md:p-8 border-b border-zinc-100 dark:border-zinc-800/80 bg-gradient-to-r from-emerald-50/60 via-teal-50/40 to-transparent dark:from-emerald-950/30 dark:via-zinc-900 dark:to-transparent relative">
                   <button 
                     onClick={closeServiceModal}
-                    className="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 flex items-center justify-center w-10 h-10 z-10"
+                    className="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 flex items-center justify-center w-9 h-9 z-10"
                     aria-label="Tutup"
                   >
                     <X className="w-5 h-5 flex-shrink-0" />
                   </button>
-                  <h3 className="font-h3 text-emerald-950 dark:text-emerald-100 mb-4 pr-8 text-xl md:text-2xl">{serviceDetails[expandedService].title}</h3>
-                  <div className="font-body-md text-zinc-600 dark:text-zinc-400 text-sm md:text-base leading-relaxed overflow-y-auto max-h-[60vh] pb-4">
-                    {serviceDetails[expandedService].content}
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 text-xs font-semibold uppercase tracking-wider mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    {serviceDetails[expandedService].badge}
                   </div>
-                  <div className="mt-6 pt-4 flex justify-end">
+                  <h3 className="font-h3 text-xl sm:text-2xl md:text-3xl font-extrabold text-zinc-900 dark:text-white pr-8">
+                    {serviceDetails[expandedService].title}
+                  </h3>
+                  <p className="mt-2 text-xs sm:text-sm text-emerald-800 dark:text-emerald-300/90 font-medium leading-relaxed">
+                    {serviceDetails[expandedService].tagline}
+                  </p>
+                </div>
+
+                {/* Scrollable Content Body */}
+                <div className="p-6 md:p-8 space-y-6 overflow-y-auto font-body-md text-sm text-zinc-600 dark:text-zinc-300 divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  {/* Overview */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Deskripsi Layanan Manufaktur
+                    </h4>
+                    <p className="text-zinc-700 dark:text-zinc-200 leading-relaxed text-sm sm:text-base">
+                      {serviceDetails[expandedService].description}
+                    </p>
+                  </div>
+
+                  {/* Spesifikasi Teknis */}
+                  <div className="pt-6 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <SlidersHorizontal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Parameter Spesifikasi Teknis Mesin & Produk
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {serviceDetails[expandedService].specs.map((item, idx) => (
+                        <div key={idx} className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-700/60">
+                          <div className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-400 uppercase tracking-wide">{item.label}</div>
+                          <div className="text-sm font-bold text-zinc-800 dark:text-zinc-100 mt-0.5">{item.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Formulasi & Bahan Baku */}
+                  <div className="pt-6 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <FlaskConical className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Pilihan Formulasi Bahan Baku & Zat Aktif
+                    </h4>
+                    <ul className="grid grid-cols-1 gap-2">
+                      {serviceDetails[expandedService].ingredients.map((ing, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-200">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <span>{ing}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Kemasan */}
+                  <div className="pt-6 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <Boxes className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Pilihan Kemasan Primer & Sekunder
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {serviceDetails[expandedService].packaging.map((pack, idx) => (
+                        <div key={idx} className="flex items-start gap-2 p-2.5 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-500/20 text-xs sm:text-sm text-zinc-700 dark:text-zinc-200">
+                          <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <span>{pack}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Workflow */}
+                  <div className="pt-6 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Tahapan Alur Pengerjaan Maklon
+                    </h4>
+                    <div className="space-y-2">
+                      {serviceDetails[expandedService].workflow.map((flow, idx) => (
+                        <div key={idx} className="flex items-start gap-3 p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200/60 dark:border-zinc-700/50 text-xs sm:text-sm">
+                          <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <span className="text-zinc-700 dark:text-zinc-200">{flow}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Legalitas & Jaminan */}
+                  <div className="pt-6 space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      Jaminan Kualitas, Legalitas & Kerahasiaan Formula
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {serviceDetails[expandedService].guarantees.map((gua, idx) => (
+                        <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 text-xs text-zinc-700 dark:text-zinc-200 font-medium">
+                          <BadgeCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          <span>{gua}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer CTA */}
+                <div className="p-4 sm:p-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/90 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+                  <div className="text-xs text-zinc-500 dark:text-zinc-400 text-center sm:text-left">
+                    Konsultasi gratis & penyesuaian formula sampel R&D.
+                  </div>
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
                     <button 
                       onClick={closeServiceModal}
-                      className="px-6 py-2.5 rounded-full bg-gradient-to-r from-emerald-950 to-emerald-600 dark:from-emerald-300 dark:to-emerald-500 text-white dark:text-emerald-950 font-medium hover:from-emerald-900 hover:to-emerald-500 dark:hover:from-emerald-400 dark:hover:to-emerald-600 transition-colors shadow-md border border-emerald-500/20"
+                      className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-sm font-semibold transition-colors"
                     >
                       Tutup
                     </button>
+                    <a
+                      href={`https://wa.me/6282225613106?text=${encodeURIComponent(serviceDetails[expandedService].waMessage)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                    >
+                      <Phone className="w-4 h-4" />
+                      Konsultasi via WhatsApp
+                    </a>
                   </div>
                 </div>
               </motion.div>
@@ -625,108 +1331,140 @@ function Home() {
           </div>
 
           {/* R&D Process Breakdown */}
-          <div className="mt-8 md:mt-10">
-            <div className="text-center max-w-[768px] mx-auto mb-6 md:mb-8">
-              <h3 className="font-h2 text-h2 text-on-surface mb-xs">Tahapan Maklon Kami</h3>
-              <p className="font-body-md text-on-surface-variant text-sm">Proses pengembangan produk dan manufaktur yang terstruktur untuk mewujudkan brand Anda dari konsep hingga siap edar.</p>
+          <div className="mt-10 md:mt-12">
+            <div className="text-center max-w-[768px] mx-auto mb-8 md:mb-10 px-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-label-sm text-[10px] md:text-xs uppercase tracking-widest mb-3 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Alur Kerja Terstruktur
+              </div>
+              <h3 className="font-h2 text-2xl sm:text-3xl md:text-4xl text-on-surface font-extrabold tracking-tight mb-2">
+                Tahapan Maklon Kami
+              </h3>
+              <p className="font-body-md text-on-surface-variant text-sm md:text-base leading-relaxed max-w-[620px] mx-auto">
+                Proses pengembangan produk dan manufaktur yang terstruktur untuk mewujudkan brand Anda dari konsep hingga siap edar.
+              </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md gap-y-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-10">
               {/* Step 1 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">1</div>
+              <div className="bg-surface rounded-2xl border border-outline-variant/30 relative flex flex-col h-full hover:border-emerald-500/40 hover:shadow-lg transition-all duration-300 p-6 pt-7 shadow-xs">
+                <div className="absolute -top-4 left-6 w-9 h-9 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-sm shadow-md border border-emerald-400/30">
+                  1
+                </div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Konsultasi & Ideasi</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Diskusi mendalam mengenai konsep produk, target pasar, pemilihan bahan baku premium, dan rancangan formula eksklusif brand Anda.</p>
+                <h4 className="font-h3 text-on-surface text-lg font-bold mb-2">
+                  Konsultasi & Ideasi
+                </h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-6 leading-relaxed">
+                  Diskusi mendalam mengenai konsep produk, target pasar, pemilihan bahan baku premium, dan rancangan formula eksklusif brand Anda.
+                </p>
                 
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest/80 dark:bg-surface-container-high/40 -mx-6 -mb-6 p-5 rounded-b-2xl">
                   <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">1 - 2 Minggu</span>
+                      <span className="text-sm font-semibold text-on-surface">1 - 2 Minggu</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Konsep Produk & Kesepakatan Awal</span>
+                      <span className="text-sm text-on-surface font-medium leading-snug">Konsep Produk & Kesepakatan Awal</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Step 2 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">2</div>
+              <div className="bg-surface rounded-2xl border border-outline-variant/30 relative flex flex-col h-full hover:border-emerald-500/40 hover:shadow-lg transition-all duration-300 p-6 pt-7 shadow-xs">
+                <div className="absolute -top-4 left-6 w-9 h-9 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-sm shadow-md border border-emerald-400/30">
+                  2
+                </div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Formulasi & Sampel</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Tim R&D Farmasi kami meracik sampel awal untuk uji organoleptik, kestabilan tekstur, dan rasa rill hingga formula final teruji (<i>Locked</i>).</p>
+                <h4 className="font-h3 text-on-surface text-lg font-bold mb-2">
+                  Formulasi & Sampel
+                </h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-6 leading-relaxed">
+                  Tim R&D Farmasi kami meracik sampel awal untuk uji organoleptik, kestabilan tekstur, dan cita rasa riil hingga formula final teruji (<i>Locked</i>).
+                </p>
                 
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest/80 dark:bg-surface-container-high/40 -mx-6 -mb-6 p-5 rounded-b-2xl">
                   <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">2 - 4 Minggu</span>
+                      <span className="text-sm font-semibold text-on-surface">2 - 4 Minggu</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Sampel <i>Approved</i> & Formula Final</span>
+                      <span className="text-sm text-on-surface font-medium leading-snug">Sampel <i>Approved</i> & Formula Final</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Step 3 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">3</div>
+              <div className="bg-surface rounded-2xl border border-outline-variant/30 relative flex flex-col h-full hover:border-emerald-500/40 hover:shadow-lg transition-all duration-300 p-6 pt-7 shadow-xs">
+                <div className="absolute -top-4 left-6 w-9 h-9 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-sm shadow-md border border-emerald-400/30">
+                  3
+                </div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Legalitas & Desain</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Pengesahan identitas merek. Kami mengurus izin BPOM, Sertifikasi Halal, sembari tim desain merancang kemasan komersial.</p>
+                <h4 className="font-h3 text-on-surface text-lg font-bold mb-2">
+                  Legalitas & Desain
+                </h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-6 leading-relaxed">
+                  Pengesahan identitas merek. Kami mengurus izin BPOM, Sertifikasi Halal, sembari tim desain merancang kemasan komersial yang memikat.
+                </p>
                 
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest/80 dark:bg-surface-container-high/40 -mx-6 -mb-6 p-5 rounded-b-2xl">
                   <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">1 - 3 Bulan</span>
+                      <span className="text-sm font-semibold text-on-surface">1 - 3 Bulan</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Izin Edar BPOM & Desain Kemasan</span>
+                      <span className="text-sm text-on-surface font-medium leading-snug">Izin Edar BPOM & Desain Kemasan</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Step 4 */}
-              <div className="bg-surface p-md rounded-xl border border-outline-variant/30 relative flex flex-col h-full hover:border-tertiary/50 hover:shadow-md transition-all duration-300">
-                <div className="absolute -top-5 left-6 w-10 h-10 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-lg shadow-md border border-emerald-500/20">4</div>
+              <div className="bg-surface rounded-2xl border border-outline-variant/30 relative flex flex-col h-full hover:border-emerald-500/40 hover:shadow-lg transition-all duration-300 p-6 pt-7 shadow-xs">
+                <div className="absolute -top-4 left-6 w-9 h-9 bg-gradient-to-br from-emerald-950 to-emerald-600 text-white rounded-xl flex items-center justify-center font-h3 font-bold text-sm shadow-md border border-emerald-400/30">
+                  4
+                </div>
                 
-                <h4 className="font-h3 text-on-surface text-lg mb-xs mt-4">Produksi & Pengiriman</h4>
-                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-md">Produksi massal berstandar CPPOB/GMP, <i>Quality Control</i> yang ketat, dilanjutkan pengemasan siap jual dan pengiriman ke <i>warehouse</i> Anda.</p>
+                <h4 className="font-h3 text-on-surface text-lg font-bold mb-2">
+                  Produksi & Pengiriman
+                </h4>
+                <p className="font-body-md text-on-surface-variant text-sm flex-grow mb-6 leading-relaxed">
+                  Produksi massal berstandar CPPOB/GMP, <i>Quality Control</i> yang ketat, dilanjutkan pengemasan siap jual dan pengiriman ke <i>warehouse</i> Anda.
+                </p>
                 
-                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest -mx-md -mb-md p-md rounded-b-xl">
+                <div className="space-y-3 mt-auto pt-4 border-t border-outline-variant/20 bg-surface-container-lowest/80 dark:bg-surface-container-high/40 -mx-6 -mb-6 p-5 rounded-b-2xl">
                   <div className="flex items-start gap-2.5">
-                    <Clock className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Clock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Timeline</span>
-                      <span className="text-sm font-medium text-on-surface">2 - 4 Minggu</span>
+                      <span className="text-sm font-semibold text-on-surface">2 - 4 Minggu</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Target className="w-4 h-4 text-tertiary mt-0.5 shrink-0" />
+                    <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                     <div>
                       <span className="block text-[10px] font-bold text-on-surface-variant/70 uppercase tracking-widest mb-0.5">Expected Outcome</span>
-                      <span className="text-sm text-on-surface leading-snug">Produk Siap Jual (<i>Ready to Launch</i>)</span>
+                      <span className="text-sm text-on-surface font-medium leading-snug">Produk Siap Jual (<i>Ready to Launch</i>)</span>
                     </div>
                   </div>
                 </div>
@@ -735,59 +1473,8 @@ function Home() {
           </div>
         </motion.section>
 
-        {/* Portofolio Products Section */}
-        <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 overflow-hidden relative" id="products">
-          <div className="text-center max-w-[768px] mx-auto mb-6 md:mb-8 px-4">
-            <h2 className="font-h2 text-h2 text-on-surface mb-sm">Portofolio Produk</h2>
-            <p className="font-body-md text-on-surface-variant">Berbagai inovasi nutrisi premium yang telah sukses kami produksi untuk klien kami.</p>
-          </div>
-          
-          <div className="max-w-[760px] mx-auto px-4">
-            <Swiper
-              effect={'coverflow'}
-              grabCursor={true}
-              centeredSlides={true}
-              slidesPerView={'auto'}
-              loop={true}
-              autoplay={{
-                delay: 3500,
-                disableOnInteraction: false,
-              }}
-              coverflowEffect={{
-                rotate: 15,
-                stretch: 0,
-                depth: 140,
-                modifier: 1,
-                slideShadows: true,
-              }}
-              pagination={{ clickable: true, dynamicBullets: true }}
-              navigation={true}
-              modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-              className="w-full pb-8 pt-2"
-            >
-              {[
-                "https://imgmu.id/f/53c4175.png",
-                "https://imgmu.id/f/837daa3.png",
-                "https://imgmu.id/f/3779f4b.png",
-                "https://imgmu.id/f/a55a55c.png",
-                "https://imgmu.id/f/6ad7578.png",
-                "https://imgmu.id/f/5585e5f.png",
-                "https://imgmu.id/f/c2ba04f.png"
-              ].map((imgUrl, idx) => (
-                <SwiperSlide key={idx} className="w-[190px] sm:w-[230px] md:w-[270px]">
-                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_12px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.45)] border border-outline-variant/30 bg-surface group transition-transform duration-300">
-                    <img src={imgUrl} alt={`Portofolio Produk Dairy Nutrition Alami ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-emerald-900/40 to-transparent opacity-80 pointer-events-none transition-opacity duration-300 group-hover:opacity-100"></div>
-                    <div className="absolute bottom-4 left-4 right-4 text-white pointer-events-none drop-shadow-md">
-                      <div className="font-label-sm uppercase tracking-widest text-white/80 dark:text-zinc-300 mb-0.5 text-[9px] md:text-[10px]">Premium Product</div>
-                      <div className="font-h3 text-sm md:text-base font-bold dark:bg-gradient-to-b dark:from-emerald-200 dark:to-emerald-400 dark:bg-clip-text dark:text-transparent">Inovasi Suplemen</div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </motion.section>
+        {/* Portofolio Products 3D Coverflow Section */}
+        <PortfolioSection />
 
         {/* Process Section */}
         <motion.section initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.6, ease: "easeOut" }} className="py-8 md:py-12 bg-surface-container-lowest border-y border-surface-variant/50" id="process">
@@ -955,7 +1642,12 @@ function Home() {
                   <Link to={`/artikel/${article.slug}`} className="block h-full group">
                     <div className="h-full flex flex-col bg-surface rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-lg transition-all duration-300 hover:border-primary/30">
                       <div className="relative aspect-[4/3] overflow-hidden">
-                        <img src={article.image} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img 
+                          src={article.image} 
+                          alt={article.title} 
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                        />
                         <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary shadow-sm">
                           DNA Insights
                         </div>
@@ -1083,8 +1775,11 @@ function Home() {
       <footer className="bg-surface-container-low w-full border-t border-outline-variant/30 font-label-sm text-xs uppercase tracking-widest text-on-surface-variant py-8 md:py-12 mt-4" id="contact">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-2 lg:col-span-2">
-            <div className="text-lg font-bold text-on-surface mb-sm capitalize tracking-tight font-h3">Dairy Nutrition Alami</div>
-            <p className="font-body-md text-on-surface-variant normal-case tracking-normal mb-lg max-w-[384px]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <img src="/logo.png" alt="Logo Dairy Nutrition Alami" className="h-8 w-auto object-contain" />
+              <div className="text-lg font-bold text-on-surface capitalize tracking-tight font-h3">Dairy Nutrition Alami</div>
+            </div>
+            <p className="font-body-md text-on-surface-variant normal-case tracking-normal mb-6 max-w-[384px]">
               Bio-Innovation in Confectionery. Menyediakan layanan maklon premium untuk brand kesehatan dan nutrisi.
             </p>
             <div className="text-on-surface-variant/70 normal-case">© 2024 Dairy Nutrition Alami (DNA). Bio-Innovation in Confectionery.</div>
@@ -1102,19 +1797,19 @@ function Home() {
               </a>
             </div>
           </div>
-          <div className="flex flex-col gap-sm">
-            <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Legal</h4>
+          <div className="flex flex-col gap-2.5">
+            <h4 className="font-bold text-on-surface mb-1 uppercase tracking-widest">Legal</h4>
             <Link aria-label="Read our Privacy Policy" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/privacy-policy">Privacy Policy</Link>
             <Link aria-label="Read our Terms of Service" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/terms-of-service">Terms of Service</Link>
             <Link aria-label="View our Manufacturing Standards" className="text-on-surface font-bold hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/manufacturing-standards">Manufacturing Standards</Link>
           </div>
-          <div className="flex flex-col gap-sm">
-            <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Company</h4>
+          <div className="flex flex-col gap-2.5">
+            <h4 className="font-bold text-on-surface mb-1 uppercase tracking-widest">Company</h4>
             <Link aria-label="View our Certifications" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/certifications">Certifications</Link>
             <Link aria-label="Contact our Support team" className="hover:text-on-surface transition-colors underline-offset-4 hover:underline" to="/contact-support">Contact Support</Link>
           </div>
-          <div className="flex flex-col gap-sm lg:col-span-1">
-            <h4 className="font-bold text-on-surface mb-xs uppercase tracking-widest">Contact</h4>
+          <div className="flex flex-col gap-2.5 lg:col-span-1">
+            <h4 className="font-bold text-on-surface mb-1 uppercase tracking-widest">Contact</h4>
             <a aria-label="Call us directly at +6282225613106" href="tel:+6282225613106" className="hover:text-on-surface transition-colors normal-case tracking-normal flex items-center gap-2">
               <Phone className="w-4 h-4 shrink-0" />
               <span>+6282225613106</span>
@@ -1123,7 +1818,7 @@ function Home() {
               <Mail className="w-4 h-4 shrink-0 mt-0.5" />
               <span>dairynutritionalami@gmail.com</span>
             </a>
-            <a aria-label="View our location on Google Maps" href="https://maps.app.goo.gl/KBH1McbbUbe2DsHF9" target="_blank" rel="noopener noreferrer" className="hover:text-on-surface transition-colors normal-case tracking-normal flex items-start gap-2 mt-xs text-on-surface-variant/90">
+            <a aria-label="View our location on Google Maps" href="https://maps.app.goo.gl/KBH1McbbUbe2DsHF9" target="_blank" rel="noopener noreferrer" className="hover:text-on-surface transition-colors normal-case tracking-normal flex items-start gap-2 mt-1 text-on-surface-variant/90">
               <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
               <span>CV Dairy Nutrition Alami<br />Jl.Nanggulan Mendut Petronalan,<br />Kel. Banjaroyo, Kec. Kalibawang,<br />Kab Kulon Progo, Daerah Istimewa Yogyakarta 55672.</span>
             </a>
@@ -1163,7 +1858,10 @@ function ArticleView() {
             <ArrowLeft className="w-5 h-5 text-on-surface-variant group-hover:text-primary transition-colors mr-2" />
             <span className="font-medium text-sm text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Kembali</span>
           </Link>
-          <div className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</div>
+          <Link to="/" className="flex items-center gap-2 group">
+            <img src="/logo.png" alt="Logo DNA" className="h-7 w-auto object-contain" />
+            <span className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</span>
+          </Link>
           <div className="w-[100px] flex justify-end">
             <ThemeToggle />
           </div>
@@ -1182,7 +1880,7 @@ function ArticleView() {
         </div>
         
         <div className="aspect-video w-full rounded-2xl overflow-hidden mb-12 shadow-md">
-          <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
+          <img src={article.image} alt={article.title} referrerPolicy="no-referrer" className="w-full h-full object-cover" />
         </div>
 
         <div className="prose prose-lg dark:prose-invert prose-p:text-on-surface-variant prose-p:leading-relaxed prose-headings:text-on-surface max-w-none">
@@ -1246,7 +1944,6 @@ export const FloatingWhatsApp = () => {
 export default function App() {
   return (
     <>
-      <ScrollProgress />
       <MouseLighting />
       <FloatingWhatsApp />
       <Routes>

@@ -61,14 +61,7 @@
   --color-on-background: #1a1c1c;
   --color-surface-variant: #e2e2e2;
 
-  --spacing-unit: 8px;
-  --spacing-xs: 4px;
-  --spacing-sm: 12px;
-  --spacing-md: 24px;
-  --spacing-lg: 48px;
-  --spacing-xl: 80px;
-  --spacing-gutter: 24px;
-  --spacing-margin: 64px;
+
 
   --radius-sm: 0.25rem;
   --radius-DEFAULT: 0.5rem;
@@ -227,3 +220,21 @@
 .animate-color-cycle {
   animation: colorCycle 4s infinite linear;
 }
+
+.portfolio-pagination .swiper-pagination-bullet {
+  background: currentColor;
+  opacity: 0.3;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.portfolio-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #059669 !important;
+  width: 22px;
+  border-radius: 9999px;
+}
+

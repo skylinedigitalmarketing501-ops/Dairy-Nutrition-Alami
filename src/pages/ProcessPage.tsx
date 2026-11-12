@@ -110,7 +110,10 @@ export const ProcessPage = () => {
             <ArrowLeft className="w-5 h-5 text-on-surface-variant group-hover:text-primary transition-colors mr-2" />
             <span className="font-medium text-sm text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest">Kembali</span>
           </Link>
-          <div className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</div>
+          <Link to="/" className="flex items-center gap-2 group">
+            <img src="/logo.png" alt="Logo DNA" className="h-7 w-auto object-contain" />
+            <span className="font-h3 text-lg font-bold text-on-surface uppercase tracking-tight">DNA.</span>
+          </Link>
           <div className="w-[100px] flex justify-end">
             <ThemeToggle />
           </div>
